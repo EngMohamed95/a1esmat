@@ -83,6 +83,13 @@ def clients_html(lang):
                     for s, n, tone in CLIENTS)
     return f'<section id="clients"><h2 class="sec-h">{h}</h2><p>{p}</p><ul class="clients">{items}</ul></section>'
 
+def articles_teaser(lang):
+    if lang != "ar":
+        return ""
+    return ('<section id="articles"><h2 class="sec-h">أحدث المقالات</h2>'
+            f'<div class="plist">{"".join(acard(a) for a in ARTICLES)}</div>'
+            '<div class="actions"><a class="btn ghost" href="/blog/">كل المقالات</a></div></section>')
+
 def hero_inner(crumbs, lang, h1, lede=""):
     return crumbs_html(crumbs, lang) + f"<h1>{escape(h1)}</h1>" + (f'<p class="lede">{escape(lede)}</p>' if lede else "")
 
@@ -119,6 +126,7 @@ def build_home(lang):
 <section class="split" id="about"><div class="frame">{img('ahmed-esmat-dubai-advisor', lang, 'cover top', sizes='(max-width:860px) 100vw, 560px')}</div>
  <div><h2>{escape(h['bio_h'])}</h2>{''.join(f'<p>{escape(x)}</p>' for x in h['bio'])}</div></section>
 {clients_html(lang)}
+{articles_teaser(lang)}
 {faq_html(h['faqs'], h['faq_h'])}
 </div>
 {band(lang, h['band_h'], h['band'])}"""
@@ -384,6 +392,9 @@ AddDefaultCharset utf-8
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteBase /
+# www -> non-www (one canonical host)
+RewriteCond %{{HTTP_HOST}} ^www[.]a1esmat[.]com$ [NC]
+RewriteRule ^(.*)$ https://a1esmat.com/$1 [R=301,L]
 {rules}
 # WordPress feeds, archives and sitemaps
 RewriteRule ^(feed|comments/feed)(/.*)?$ /blog/ [R=301,L]
