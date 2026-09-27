@@ -70,7 +70,8 @@ def card(p, lang):
             f'<a class="more" href="{ppath(p, lang)}">{t["view"]}</a></div></article>')
 
 def band(lang, heading, buttons, bg="skyline-sunset"):
-    btns = "".join(f'<a class="btn{" ghost" if i else ""}" href="{u}">{escape(l)}</a>' for i, (u, l) in enumerate(buttons))
+    to_form = lambda u: "#contact" if (C.WHATSAPP and u.endswith("/book/")) else u
+    btns = "".join(f'<a class="btn{" ghost" if i else ""}" href="{to_form(u)}">{escape(l)}</a>' for i, (u, l) in enumerate(buttons))
     return (f'<section class="band">{img(bg, lang, "cover")}<div class="wrap"><h2>{escape(heading)}</h2>'
             f'<div class="actions">{btns}</div></div></section>')
 
@@ -198,7 +199,7 @@ def build_project(p, lang):
     ul = lambda xs: "<ul>" + "".join(f"<li>{escape(x)}</li>" for x in xs) + "</ul>"
     msg = (f"مرحباً أحمد، أريد آخر سعر وخطة دفع لمشروع {name}" if lang == "ar" else f"Hi Ahmed, please send the latest price and payment plan for {name}")
     wa = wa_link(msg)
-    ask = f'<a class="btn ghost" href="{wa}" rel="noopener">{t["ask_plan"]}</a>' if wa else f'<a class="btn ghost" href="{"/ar/book/" if lang=="ar" else "/book/"}">{t["ask_plan"]}</a>'
+    ask = f'<a class="btn ghost" href="#contact">{t["ask_plan"]}</a>' if wa else f'<a class="btn ghost" href="{"/ar/book/" if lang=="ar" else "/book/"}">{t["ask_plan"]}</a>'
     pct = ""
     if p["pct_before_handover"]:
         pct = (f"<p>نحو {p['pct_before_handover']}٪ من السعر يُدفع قبل استلام الوحدة.</p>" if lang == "ar"
@@ -229,7 +230,9 @@ def build_project(p, lang):
              "alternateName": p["ar"]["name"], "url": C.DOMAIN + path, "description": d["summary"],
              "address": {"@type": "PostalAddress", "addressLocality": "Dubai", "addressCountry": "AE", "streetAddress": p["en"]["area"]}}
     schemas = [crumbs_schema(crumbs), place, faq_schema(d["faqs"])]
-    write(path, page(lang=lang, path=path, title=title, description=meta, body=body, alt_path=alt, schemas=schemas, og_img=key), alt)
+    topic = (f"مهتم بمشروع {name}، أريد آخر سعر وخطة دفع." if lang == "ar" else f"Interested in {name}. Please send the latest price and payment plan.")
+    write(path, page(lang=lang, path=path, title=title, description=meta, body=body, alt_path=alt, schemas=schemas, og_img=key,
+                     lead_topic=topic, lead_interest=2), alt)
 
 # ------------------------------------------------------------------ ASSESSMENT
 def build_assess(lang):
@@ -337,7 +340,7 @@ def build_blog():
             + band("ar", HOME["ar"]["band_h"], HOME["ar"]["band"]))
     write(path, page(lang="ar", path=path, title="مقالات أحمد عصمت في التسويق ونمو الأعمال",
                      description="مقالات أحمد عصمت في التسويق الرقمي والبراندينج والسرد القصصي ومحتوى النمو والمبيعات، مع أمثلة عملية لأصحاب الأعمال.",
-                     body=body, schemas=[crumbs_schema(crumbs)], og_img="skyline-storm"))
+                     body=body, schemas=[crumbs_schema(crumbs)], og_img="skyline-storm", lead_interest=3))
 
 def build_article(a):
     path = f"/{a['slug']}/"
@@ -349,7 +352,7 @@ def build_article(a):
 <header class="ahead"><h1>{escape(a['h1'])}</h1><p class="lede">{escape(a['desc'])}</p>{byline}</header>
 <figure class="acover">{img(a['img'], 'ar', eager=True, sizes='(max-width:860px) 100vw, 820px')}</figure>
 <div class="prose">{a['html']}</div>
-<section class="mini"><h2>هل تريد تطبيق هذا على عملك؟</h2><p>تحدث مع أحمد عن التسويق وجذب العملاء ورفع معدل التحويل في مشروعك.</p><a class="btn" href="/ar/book/">تحدث مع أحمد</a></section>
+<section class="mini"><h2>هل تريد تطبيق هذا على عملك؟</h2><p>تحدث مع أحمد عن التسويق وجذب العملاء ورفع معدل التحويل في مشروعك.</p><a class="btn" href="#contact">تحدث مع أحمد</a></section>
 </div>
 <div class="wrap"><h2>مقالات أخرى</h2><div class="plist">{others}</div></div>"""
     posting = {"@context": "https://schema.org", "@type": "BlogPosting", "headline": a["h1"], "description": a["desc"],
@@ -357,7 +360,7 @@ def build_article(a):
                "inLanguage": "ar", "mainEntityOfPage": C.DOMAIN + path, "author": {"@id": C.DOMAIN + "/#ahmed"},
                "publisher": {"@id": C.DOMAIN + "/#ahmed"}}
     html = page(lang="ar", path=path, title=f"{a['title']} | أحمد عصمت", description=a["desc"], body=body,
-                schemas=[crumbs_schema(crumbs), posting, person_schema()], og_type="article", og_img=a["img"])
+                schemas=[crumbs_schema(crumbs), posting, person_schema()], og_type="article", og_img=a["img"], lead_interest=3)
     html = html.replace("</head>", f'<meta property="article:published_time" content="{a["date"]}">\n'
                                     f'<meta property="article:modified_time" content="{a["modified"]}">\n</head>', 1)
     write(path, html)
@@ -365,7 +368,7 @@ def build_article(a):
 def build_404():
     body = ('<div class="wrap"><h1>Page not found</h1><p>The page you were looking for has moved or does not exist.</p>'
             '<div class="actions"><a class="btn" href="/">Go to the home page</a><a class="btn ghost" href="/ar/">الصفحة الرئيسية بالعربية</a></div></div>')
-    html = page(lang="en", path="/404.html", title="Page not found — Ahmed Esmat", description="Page not found.", body=body)
+    html = page(lang="en", path="/404.html", title="Page not found — Ahmed Esmat", description="Page not found.", body=body, lead=False)
     html = html.replace("<head>", '<head>\n<meta name="robots" content="noindex">', 1)
     write("/404.html", html, sitemap=False)
 

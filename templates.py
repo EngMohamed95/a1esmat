@@ -158,6 +158,35 @@ p,li{max-width:var(--text)}
 .prose blockquote{margin:1.5rem 0;padding:1rem 1.4rem;background:var(--gold-soft);border-inline-start:3px solid var(--gold);border-radius:8px}
 .prose li{margin:.3rem 0}
 
+/* lead form */
+.lead{background:var(--paper-2);padding:clamp(3.5rem,7vw,6rem) 0;scroll-margin-top:60px;border-top:1px solid var(--line)}
+.lead-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(2rem,5vw,4.5rem);align-items:start}
+.lead h2{margin-top:0}
+.lead h2::before{content:"";display:block;width:48px;height:2px;background:var(--gold);margin-bottom:1rem}
+.lead .eyebrow{color:var(--gold-deep)}
+.lead-points{list-style:none;padding:0;margin:1.25rem 0}
+.lead-points li{position:relative;padding-inline-start:1.7rem;margin:.5rem 0}
+.lead-points li::before{content:"✓";position:absolute;inset-inline-start:0;color:var(--gold-deep);font-weight:700}
+.lead-who{display:flex;align-items:center;gap:.9rem;margin-top:1.5rem}
+.lead-who img{width:64px;height:64px;border-radius:50%;object-fit:cover;object-position:50% 20%;border:2px solid var(--gold)}
+.lead-who b{display:block;font-family:var(--head);font-size:1.1rem}
+.lead-who span{color:var(--muted);font-size:.95rem}
+.lead-form{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:clamp(1.3rem,3vw,2rem);box-shadow:var(--shadow-lg);display:grid;gap:1rem;position:relative;overflow:hidden}
+.lead-form::before{content:"";position:absolute;inset-block-start:0;inset-inline:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-2))}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.lead-form label{display:grid;gap:.35rem;font-weight:500;font-size:.93rem;color:var(--ink-2)}
+.lead-form input,.lead-form select,.lead-form textarea{font:inherit;font-size:1rem;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:.8rem .9rem;width:100%;min-height:48px;transition:border-color .2s,box-shadow .2s}
+.lead-form textarea{resize:vertical;min-height:96px}
+.lead-form input:focus,.lead-form select:focus,.lead-form textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(176,141,87,.2)}
+[dir=rtl] .lead-form input[dir=ltr]{text-align:right}
+.wa-btn{justify-content:center;width:100%;background:#1F8F5F;border-color:#1F8F5F;color:#fff;font-size:1.05rem;padding:1rem}
+.wa-btn:hover{background:#187650;border-color:#187650;color:#fff;box-shadow:0 10px 24px -10px rgba(31,143,95,.6)}
+.lead-form .note{margin:-.4rem 0 0;text-align:center}
+.lead-err{margin:0;color:var(--risk);font-weight:500}
+.lead-ok{margin:0;background:var(--suit-soft);border-radius:8px;padding:.7rem .9rem;color:var(--suit);font-weight:500}
+@media (max-width:860px){.lead-grid{grid-template-columns:1fr}}
+@media (max-width:520px){.frow{grid-template-columns:1fr}}
+
 /* steps */
 .steps{counter-reset:s;list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.25rem;margin:1.5rem 0}
 .steps li{counter-increment:s;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:1.5rem 1.4rem;box-shadow:var(--shadow);position:relative;overflow:hidden}
@@ -458,7 +487,51 @@ def crumbs_html(items, lang):
     label = "مسار الصفحة" if lang == "ar" else "Breadcrumb"
     return f'<nav class="crumbs" aria-label="{label}">{sep.join(parts)}</nav>'
 
-def page(*, lang, path, title, description, body, alt_path=None, schemas=(), og_type="website", og_img="skyline-night", home_page=False):
+LEAD = {
+    "ar": {"eyebrow": "تواصل مباشر", "h": "تحدث مع أحمد", "p": "اترك بياناتك وسيفتح واتساب برسالة جاهزة تصل لأحمد مباشرة. أخبرنا بما تفكر فيه، وسنرد عليك بالأسئلة التي تهم وضعك.",
+           "points": ["الرد مباشرة على واتساب", "بدون أي التزام", "نبدأ من هدفك وميزانيتك، لا من المشروع"],
+           "name": "الاسم", "phone": "رقم الهاتف", "phone_ph": "مثال: 971501234567+", "interest": "ما الذي تبحث عنه؟", "budget": "الميزانية التقريبية (درهم)",
+           "msg": "رسالتك (اختياري)", "msg_ph": "مثلاً: أبحث عن فيلا لعائلتي خلال سنة…", "send": "إرسال عبر واتساب",
+           "note": "عند الضغط سيفتح واتساب برسالة جاهزة، اضغط إرسال فقط.", "ok": "تم تجهيز رسالتك في واتساب. إذا لم يفتح تلقائياً، اضغط الزر مرة أخرى.",
+           "err": "من فضلك اكتب الاسم ورقم هاتف صحيح.",
+           "interests": ["شراء فيلا أو تاون هاوس", "استثمار في مشروع قيد الإنشاء", "مقارنة مشاريع", "استشارة تسويق ونمو أعمال", "أخرى"],
+           "budgets": ["لم أحدد بعد", "أقل من 2 مليون", "من 2 إلى 5 ملايين", "من 5 إلى 15 مليون", "أكثر من 15 مليون"],
+           "wa": {"hi": "مرحباً أحمد، أنا", "phone": "الهاتف", "interest": "أبحث عن", "budget": "الميزانية", "msg": "الرسالة", "page": "من صفحة"}},
+    "en": {"eyebrow": "Direct contact", "h": "Talk to Ahmed", "p": "Leave your details and WhatsApp opens with a ready message to Ahmed. Tell us what you're weighing up and we'll reply with the questions that matter for your situation.",
+           "points": ["Reply directly on WhatsApp", "No obligation", "We start from your goal and budget, not a project"],
+           "name": "Name", "phone": "Phone number", "phone_ph": "e.g. +971501234567", "interest": "What are you looking for?", "budget": "Approximate budget (AED)",
+           "msg": "Message (optional)", "msg_ph": "e.g. Looking for a family villa within a year…", "send": "Send via WhatsApp",
+           "note": "WhatsApp opens with your message ready. Just tap send.", "ok": "Your WhatsApp message is ready. If it didn't open, tap the button again.",
+           "err": "Please enter your name and a valid phone number.",
+           "interests": ["Buying a villa or townhouse", "Off-plan investment", "Comparing projects", "Marketing & business growth advice", "Other"],
+           "budgets": ["Not decided yet", "Under 2M", "2M – 5M", "5M – 15M", "Over 15M"],
+           "wa": {"hi": "Hi Ahmed, I'm", "phone": "Phone", "interest": "Looking for", "budget": "Budget", "msg": "Message", "page": "From page"}},
+}
+
+def lead_form(lang, topic="", interest=0):
+    """Contact form shown on every page; submit opens WhatsApp with the details."""
+    if not C.WHATSAPP:
+        return ""
+    L = LEAD[lang]
+    opts = lambda xs, sel=-1: "".join(f'<option{" selected" if i == sel else ""}>{escape(x)}</option>' for i, x in enumerate(xs))
+    pts = "".join(f"<li>{escape(x)}</li>" for x in L["points"])
+    msg = escape(topic)
+    return f"""<section class="lead" id="contact"><div class="wrap lead-grid">
+<div class="lead-intro"><p class="eyebrow">{L['eyebrow']}</p><h2>{L['h']}</h2><p>{escape(L['p'])}</p><ul class="lead-points">{pts}</ul>
+<div class="lead-who"><img src="/assets/img/ahmed-esmat-dubai-advisor-600.webp" width="600" height="600" alt="{'أحمد عصمت' if lang == 'ar' else 'Ahmed Esmat'}" loading="lazy" decoding="async"><div><b>{'أحمد عصمت' if lang == 'ar' else 'Ahmed Esmat'}</b><span dir="ltr">+{C.WHATSAPP[:3]} {C.WHATSAPP[3:5]} {C.WHATSAPP[5:8]} {C.WHATSAPP[8:]}</span></div></div></div>
+<form class="lead-form" data-wa="{C.WHATSAPP}" data-l='{escape(json.dumps(L["wa"], ensure_ascii=False))}' novalidate>
+<div class="frow"><label>{L['name']}<input name="name" autocomplete="name" required maxlength="80"></label>
+<label>{L['phone']}<input name="phone" type="tel" inputmode="tel" autocomplete="tel" dir="ltr" required placeholder="{L['phone_ph']}" maxlength="25"></label></div>
+<div class="frow"><label>{L['interest']}<select name="interest">{opts(L['interests'], interest)}</select></label>
+<label>{L['budget']}<select name="budget">{opts(L['budgets'], 0)}</select></label></div>
+<label>{L['msg']}<textarea name="msg" rows="3" maxlength="600" placeholder="{L['msg_ph']}">{msg}</textarea></label>
+<p class="lead-err" role="alert" hidden>{L['err']}</p>
+<button class="btn wa-btn" type="submit"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .2-1.2c-.1-.1-.3-.2-.5-.3Z"/></svg>{L['send']}</button>
+<p class="note">{L['note']}</p><p class="lead-ok" role="status" hidden>{L['ok']}</p>
+</form></div></section>"""
+
+def page(*, lang, path, title, description, body, alt_path=None, schemas=(), og_type="website", og_img="skyline-night", home_page=False,
+         lead=True, lead_topic="", lead_interest=0):
     rtl = lang == "ar"
     canonical = C.DOMAIN + path
     alt = ""
@@ -470,6 +543,7 @@ def page(*, lang, path, title, description, body, alt_path=None, schemas=(), og_
     lang_link = alt_path or ("/" if rtl else "/ar/")
     lang_label = "English" if rtl else "العربية"
     nav = "".join(f'<a href="{u}">{escape(t)}</a>' for u, t in NAV[lang])
+    lead_html = lead_form(lang, lead_topic, lead_interest) if lead else ""
     talk = "تحدث مع أحمد" if rtl else "Talk to Ahmed"
     brand_sub = "استشارات عقارية واستثمارية في دبي" if rtl else "Dubai real estate & business advisory"
     brand = "أحمد عصمت" if rtl else "Ahmed Esmat"
@@ -524,10 +598,11 @@ def page(*, lang, path, title, description, body, alt_path=None, schemas=(), og_
 <header class="site-head"><div class="wrap">
 <a class="brand" href="{home}"><img class="mark" src="/assets/img/a1esmat-logo-mark.webp" width="118" height="112" alt=""><span class="bt">{brand}<small>{brand_sub}</small></span></a>
 <button class="burger" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="{'القائمة' if rtl else 'Menu'}"><span></span></button>
-<nav class="nav" id="site-nav" aria-label="{'القائمة الرئيسية' if rtl else 'Main'}">{nav}<a class="btn small" href="{'/ar/book/' if rtl else '/book/'}">{talk}</a><a class="lang" href="{lang_link}" hreflang="{'en' if rtl else 'ar'}" lang="{'en' if rtl else 'ar'}">{lang_label}</a></nav>
+<nav class="nav" id="site-nav" aria-label="{'القائمة الرئيسية' if rtl else 'Main'}">{nav}<a class="btn small" href="{'#contact' if lead_html else ('/ar/book/' if rtl else '/book/')}">{talk}</a><a class="lang" href="{lang_link}" hreflang="{'en' if rtl else 'ar'}" lang="{'en' if rtl else 'ar'}">{lang_label}</a></nav>
 </div></header>
 <main id="main">
 {body}
+{lead_html}
 </main>
 <footer class="site-foot"><div class="wrap">
 <div class="foot-brand"><a class="brand" href="{home}"><img class="mark" src="/assets/img/a1esmat-logo-mark.webp" width="118" height="112" alt=""><span class="bt">{brand}<small>{brand_sub}</small></span></a><p>{escape(foot_tag)}</p></div>
@@ -540,6 +615,14 @@ def page(*, lang, path, title, description, body, alt_path=None, schemas=(), og_
 var bt=h.querySelector('.burger');bt.addEventListener('click',function(){{var o=h.classList.toggle('open');bt.setAttribute('aria-expanded',o)}});
 h.querySelectorAll('.nav a').forEach(function(a){{a.addEventListener('click',function(){{h.classList.remove('open');bt.setAttribute('aria-expanded','false')}})}});
 if(document.body.classList.contains('home')){{var s=function(){{h.classList.toggle('scrolled',scrollY>40)}};s();addEventListener('scroll',s,{{passive:true}})}}
+var lf=document.querySelector('.lead-form');
+if(lf){{lf.addEventListener('submit',function(e){{e.preventDefault();var L=JSON.parse(lf.dataset.l),v=function(n){{return (lf.elements[n].value||'').trim()}};
+var N=String.fromCharCode(10),digits=v('phone').replace(/[^0-9]/g,''),err=lf.querySelector('.lead-err');
+if(!v('name')||digits.length<7){{err.hidden=false;return}}err.hidden=true;
+var t=L.hi+' '+v('name')+N+L.phone+': '+v('phone')+N+L.interest+': '+v('interest')+N+L.budget+': '+v('budget')+(v('msg')?N+L.msg+': '+v('msg'):'')+N+L.page+': '+document.title+N+location.href.split('#')[0];
+var u='https://wa.me/'+lf.dataset.wa+'?text='+encodeURIComponent(t);
+if(typeof gtag==='function')gtag('event','generate_lead',{{method:'whatsapp_form'}});
+lf.querySelector('.lead-ok').hidden=false;var w=window.open(u,'_blank','noopener');if(!w)location.href=u;}});}}
 var els=document.querySelectorAll('.pcard,.tile,.steps li,.q4 > div,.split,.mini,.fitbox,.strengths,.risks');
 if(!('IntersectionObserver' in window))return;
 var io=new IntersectionObserver(function(es){{es.forEach(function(e){{if(e.isIntersecting){{e.target.classList.add('in');io.unobserve(e.target)}}}})}},{{rootMargin:'0px 0px -8% 0px'}});

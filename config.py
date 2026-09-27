@@ -7,7 +7,7 @@ DOMAIN = "https://a1esmat.com"
 
 # --- Contact (REQUIRED before going live) ---------------------------------
 # WhatsApp number in international format, digits only, e.g. "971501234567"
-WHATSAPP = ""
+WHATSAPP = "971547772515"
 EMAIL = ""            # e.g. "hello@a1esmat.com"
 INSTAGRAM = "https://www.instagram.com/a1esmat/"
 
