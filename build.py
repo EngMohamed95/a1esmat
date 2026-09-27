@@ -428,6 +428,7 @@ def build_static():
     with open(os.path.join(OUT, "assets", "site.css"), "w", encoding="utf-8") as f: f.write(CSS.strip())
     shutil.copytree(os.path.join(os.path.dirname(OUT), "static", "img"), os.path.join(OUT, "assets", "img"))
     shutil.copytree(os.path.join(os.path.dirname(OUT), "static", "icons"), os.path.join(OUT, "assets", "icons"))
+    shutil.copytree(os.path.join(os.path.dirname(OUT), "static", "fonts"), os.path.join(OUT, "assets", "fonts"), ignore=shutil.ignore_patterns("*.css"))
     shutil.copy(os.path.join(os.path.dirname(OUT), "static", "icons", "favicon.ico"), os.path.join(OUT, "favicon.ico"))
     with open(os.path.join(OUT, ".htaccess"), "w", encoding="utf-8", newline="\n") as f:
         f.write(htaccess())

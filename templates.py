@@ -350,15 +350,17 @@ def img(key, lang, cls="", eager=False, sizes="100vw"):
     """Responsive <img> for an image in data_images.IMAGES."""
     im = IMAGES[key]
     a = escape(im[lang])
-    small, big = im.get("w", (900, 1920))
-    h = round(small * im.get("h", 2 / 3))
+    ws = im.get("w", (600, 900, 1920))
+    base = ws[1] if len(ws) > 2 else ws[0]
+    h = round(base * im.get("h", 2 / 3))
     load = 'fetchpriority="high"' if eager else 'loading="lazy"'
     c = f' class="{cls}"' if cls else ""
-    return (f'<img{c} src="/assets/img/{key}-{small}.webp" srcset="/assets/img/{key}-{small}.webp {small}w, /assets/img/{key}-{big}.webp {big}w" '
-            f'sizes="{sizes}" width="{small}" height="{h}" alt="{a}" {load} decoding="async">')
+    srcset = ", ".join(f"/assets/img/{key}-{w}.webp {w}w" for w in ws)
+    return (f'<img{c} src="/assets/img/{key}-{base}.webp" srcset="{srcset}" '
+            f'sizes="{sizes}" width="{base}" height="{h}" alt="{a}" {load} decoding="async">')
 
 def img_url(key):
-    return f"{C.DOMAIN}/assets/img/{key}-{IMAGES[key].get('w', (900, 1920))[1]}.webp"
+    return f"{C.DOMAIN}/assets/img/{key}-{IMAGES[key].get('w', (600, 900, 1920))[-1]}.webp"
 
 def illus(lang):
     return f'<span class="illus">{"صورة توضيحية" if lang == "ar" else "Illustrative image"}</span>'
@@ -486,6 +488,7 @@ def page(*, lang, path, title, description, body, alt_path=None, schemas=(), og_
               f"<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments)}}gtag('js',new Date());gtag('config','{C.GA4_ID}');</script>")
     gsc = f'<meta name="google-site-verification" content="{C.GSC_VERIFICATION}">' if C.GSC_VERIFICATION else ""
     schema_html = "\n".join(ld(s) for s in schemas)
+    preload_fonts = "\n".join(f'<link rel="preload" href="/assets/fonts/{f}" as="font" type="font/woff2" crossorigin>' for f in PRELOAD[lang])
     skip = "انتقل إلى المحتوى" if rtl else "Skip to content"
     return f"""<!doctype html>
 <html lang="{lang}" dir="{'rtl' if rtl else 'ltr'}">
@@ -502,15 +505,13 @@ def page(*, lang, path, title, description, body, alt_path=None, schemas=(), og_
 <meta property="og:url" content="{canonical}">
 <meta property="og:locale" content="{'ar_AE' if rtl else 'en_AE'}">
 <meta property="og:site_name" content="Ahmed Esmat">
-<meta property="og:image" content="{C.DOMAIN}/assets/img/{og_img}-1920.webp">
+<meta property="og:image" content="{img_url(og_img)}">
 <meta property="og:image:alt" content="{escape(IMAGES[og_img][lang])}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#0E1B20">
 {gsc}
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/site.css?v={CSS_V}">
+{preload_fonts}
+<style>{INLINE_CSS[lang]}</style>
 <link rel="icon" href="/assets/icons/icon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/icons/icon-192.png" sizes="192x192" type="image/png">
 <link rel="apple-touch-icon" href="/assets/icons/icon-180.png">
@@ -550,3 +551,24 @@ els.forEach(function(el,i){{el.classList.add('reveal');el.style.transitionDelay=
 """
 
 CSS_V = hashlib.md5(CSS.encode("utf-8")).hexdigest()[:10]
+
+# Self-hosted fonts + CSS inlined into every page: no render-blocking requests
+import os as _os, re as _re
+_FONTS = open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "static", "fonts", "fonts.css"), encoding="utf-8").read()
+
+def _minify(css):
+    css = _re.sub(r"/\*.*?\*/", "", css, flags=_re.S)
+    css = _re.sub(r"\s+", " ", css)
+    css = _re.sub(r"\s*([{};,>])\s*", r"\1", css)
+    return css.replace(";}", "}").strip()
+
+PRELOAD = {"ar": ["ibm-plex-sans-arabic-400-arabic.woff2", "el-messiri-600-arabic.woff2"],
+           "en": ["ibm-plex-sans-arabic-400-latin.woff2", "playfair-display-500-latin.woff2"]}
+
+def _fonts_for(lang):
+    # preload + font-display:optional -> fonts never swap in after first paint, so they cause no layout shift (CLS)
+    faces = _FONTS.replace("font-display:swap", "font-display:optional").strip().splitlines()
+    # Latin text inside Arabic headings uses Playfair; skip El Messiri's Latin file entirely
+    return "\n".join(f for f in faces if "el-messiri-600-latin" not in f)
+
+INLINE_CSS = {l: _minify(_fonts_for(l) + CSS) for l in ("ar", "en")}
