@@ -17,9 +17,9 @@ Each language block:
 """
 
 GUIDES = [
-    {"slug": "cash-needed-townhouse-dubai", "calc": "cash", "approved": False,
+    {"slug": "cash-needed-townhouse-dubai", "calc": "cash", "approved": True,
      "title": ("How much cash do you need to buy a townhouse in Dubai?", "كم كاش تحتاج لشراء تاون هاوس في دبي؟"),
-     "en": {"date": "",
+     "en": {"date": "2026-10-13",
             "intro": "For a ready townhouse bought with a mortgage, plan for roughly a quarter of the price in cash: the down payment, the 4% registration fee and the mortgage registration. On a AED 2.7M townhouse that is about AED 653,690, before agency commission and bank fees.",
             "points": [
                 ("Down payment", "For a first completed home, banks lend at most 80% of the value up to AED 5M (70% above that), so a resident pays at least 20% from their own cash: AED 540,000 on AED 2.7M."),
@@ -31,7 +31,7 @@ GUIDES = [
             ],
             "faqs": [("Can I buy with less than 20% down?", "Not with a mortgage on a first completed home: the Central Bank caps the loan at 80% up to AED 5M. Second homes are capped at 60% and off-plan at 50%."),
                      ("Does the calculator include agency commission?", "No. It shows the down payment and the two registration fees. Add commission and bank fees once you have them in writing.")]},
-     "ar": {"date": "",
+     "ar": {"date": "2026-10-13",
             "intro": "لشراء تاون هاوس جاهز بتمويل بنكي، جهّز نحو ربع السعر كاشًا: الدفعة المقدمة ورسم التسجيل 4% وتسجيل الرهن. لتاون هاوس بسعر 2.7 مليون درهم يبلغ ذلك نحو 653,690 درهمًا، قبل عمولة الوسيط ورسوم البنك.",
             "points": [
                 ("الدفعة المقدمة", "في أول منزل جاهز، يموّل البنك 80% كحد أقصى إذا كان السعر حتى 5 ملايين درهم (و70% فوق ذلك)، فيدفع المقيم 20% على الأقل من ماله: 540,000 درهم لعقار بسعر 2.7 مليون."),
@@ -44,9 +44,9 @@ GUIDES = [
             "faqs": [("هل أستطيع الشراء بدفعة أقل من 20%؟", "ليس بتمويل بنكي لأول منزل جاهز: يحدد المصرف المركزي التمويل بـ80% حتى 5 ملايين درهم. والعقار الثاني بـ60%، وقيد الإنشاء بـ50%."),
                      ("هل تشمل الحاسبة عمولة الوسيط؟", "لا. تعرض الدفعة المقدمة ورسمي التسجيل. أضف العمولة ورسوم البنك عندما تحصل عليها مكتوبة.")]}},
 
-    {"slug": "monthly-payment-2-7m-townhouse", "calc": "monthly", "approved": False,
+    {"slug": "monthly-payment-2-7m-townhouse", "calc": "monthly", "approved": True,
      "title": ("What is the monthly payment on a AED 2.7M townhouse?", "كم القسط الشهري لتاون هاوس بسعر 2.7 مليون درهم؟"),
-     "en": {"date": "",
+     "en": {"date": "2026-10-13",
             "intro": "About AED 12,000 a month at 4.5% over 25 years, with a 20% down payment (a loan of AED 2.16M). At 3.75% it is about AED 11,100; at 5% about AED 12,600.",
             "points": [
                 ("The loan, not the price, sets the payment", "With 20% down on AED 2.7M you borrow AED 2.16M. A larger down payment lowers the monthly amount directly."),
@@ -58,7 +58,7 @@ GUIDES = [
             ],
             "faqs": [("Is AED 12,000 the final payment?", "It is an illustration at 4.5% over 25 years. Your bank's rate, fees and insurance change the final figure."),
                      ("How do I lower the monthly payment?", "A larger down payment, a lower rate or a longer term (up to 25 years). Each has a cost; compare the total paid, not only the monthly amount.")]},
-     "ar": {"date": "",
+     "ar": {"date": "2026-10-13",
             "intro": "نحو 12,000 درهم شهريًا بفائدة 4.5% على 25 سنة، مع دفعة مقدمة 20% (تمويل 2.16 مليون درهم). بفائدة 3.75% يصبح نحو 11,100 درهم، وبفائدة 5% نحو 12,600 درهم.",
             "points": [
                 ("التمويل لا السعر هو ما يحدد القسط", "مع دفعة 20% على 2.7 مليون تقترض 2.16 مليون درهم. وكل زيادة في الدفعة المقدمة تخفض القسط مباشرة."),
@@ -71,9 +71,9 @@ GUIDES = [
             "faqs": [("هل 12,000 درهم هو القسط النهائي؟", "هو مثال بفائدة 4.5% على 25 سنة. فائدة بنكك ورسومه والتأمين تغيّر الرقم النهائي."),
                      ("كيف أخفض القسط الشهري؟", "بدفعة مقدمة أكبر أو فائدة أقل أو مدة أطول (حتى 25 سنة). لكل خيار كلفة؛ قارن المبلغ الإجمالي المدفوع لا القسط وحده.")]}},
 
-    {"slug": "steps-to-buy-ready-villa-dubai", "calc": None, "approved": False,
+    {"slug": "steps-to-buy-ready-villa-dubai", "calc": None, "approved": True,
      "title": ("6 steps to buy a ready villa in Dubai", "6 خطوات لشراء فيلا جاهزة في دبي"),
-     "en": {"date": "",
+     "en": {"date": "2026-10-13",
             "intro": "Buying a ready villa in Dubai takes six steps: fix the budget, choose the community, inspect the unit, agree terms in writing, clear the bank and the seller's obligations, then transfer ownership. Most delays come from skipping the first and fourth.",
             "points": [
                 ("Fix the budget and the finance", "Work out the cash you need and get a mortgage pre-approval before you view, so you only look at villas you can actually buy."),
@@ -85,7 +85,7 @@ GUIDES = [
             ],
             "faqs": [("How long does it take?", "It depends mostly on the bank and on the seller's paperwork. Agree a realistic transfer date in the sale agreement rather than assuming one."),
                      ("Can I buy without a mortgage?", "Yes. A cash purchase skips the bank's valuation and approval, but every other step, including the 4% registration fee, still applies.")]},
-     "ar": {"date": "",
+     "ar": {"date": "2026-10-13",
             "intro": "شراء فيلا جاهزة في دبي يمر بست خطوات: تحديد الميزانية، واختيار المجتمع، وفحص الوحدة، والاتفاق كتابةً، وإنهاء التزامات البنك والبائع، ثم نقل الملكية. وأغلب التأخير يأتي من تجاوز الخطوة الأولى والرابعة.",
             "points": [
                 ("حدد الميزانية والتمويل", "احسب الكاش المطلوب واحصل على موافقة مبدئية على التمويل قبل المعاينة، حتى لا ترى إلا فللًا تستطيع شراءها فعلًا."),
@@ -98,9 +98,9 @@ GUIDES = [
             "faqs": [("كم تستغرق العملية؟", "يعتمد ذلك أساسًا على البنك وأوراق البائع. اتفق على موعد نقل واقعي في عقد البيع بدل افتراضه."),
                      ("هل أستطيع الشراء دون تمويل؟", "نعم. الشراء نقدًا يختصر تقييم البنك وموافقته، لكن باقي الخطوات ورسم التسجيل 4% تبقى كما هي.")]}},
 
-    {"slug": "villa-checks-before-you-pay", "calc": None, "approved": False,
+    {"slug": "villa-checks-before-you-pay", "calc": None, "approved": True,
      "title": ("8 things to check in a villa before you pay", "8 أشياء تفحصها في الفيلا قبل أن تدفع"),
-     "en": {"date": "",
+     "en": {"date": "2026-10-13",
             "intro": "Before you pay a deposit on a villa, check eight things: ownership, outstanding debts, service charges, extensions, the building's condition, the plot, the community rules and what will be built around you.",
             "points": [
                 ("Ownership", "The seller named on the title deed is the person signing, or holds a valid power of attorney."),
@@ -114,7 +114,7 @@ GUIDES = [
             ],
             "faqs": [("Should I pay for a professional inspection?", "Yes for ready villas. Its cost is small next to one roof or air-conditioning repair, and it gives you facts to negotiate with."),
                      ("Who checks the title deed?", "Verify it through the official land registry channels and match it with the seller's ID before signing.")]},
-     "ar": {"date": "",
+     "ar": {"date": "2026-10-13",
             "intro": "قبل أن تدفع عربونًا على فيلا، افحص ثمانية أشياء: الملكية، والديون المستحقة، ورسوم الخدمة، والإضافات، وحالة المبنى، والقطعة، وقواعد المجتمع، وما سيُبنى حولك.",
             "points": [
                 ("الملكية", "البائع المذكور في سند الملكية هو من يوقّع، أو يحمل وكالة سارية."),
@@ -129,9 +129,9 @@ GUIDES = [
             "faqs": [("هل أدفع لفحص هندسي؟", "نعم في الفلل الجاهزة. كلفته صغيرة مقارنة بإصلاح سطح أو تكييف واحد، ويعطيك حقائق تفاوض بها."),
                      ("من يتحقق من سند الملكية؟", "تحقق منه عبر القنوات الرسمية لتسجيل الأراضي وطابقه مع هوية البائع قبل التوقيع.")]}},
 
-    {"slug": "end-unit-or-middle-unit-townhouse", "calc": None, "approved": False,
+    {"slug": "end-unit-or-middle-unit-townhouse", "calc": None, "approved": True,
      "title": ("End-unit or middle-unit townhouse?", "تاون هاوس طرفي أم في المنتصف؟"),
-     "en": {"date": "",
+     "en": {"date": "2026-10-13",
             "intro": "An end unit usually gives more light, a side garden and more privacy, and is often priced higher. A middle unit is cheaper and simpler to maintain. The right choice depends on how you will use the home and what buyers in that community pay extra for.",
             "points": [
                 ("Light and privacy", "End units have windows on three sides and one fewer neighbour."),
@@ -143,7 +143,7 @@ GUIDES = [
             ],
             "faqs": [("Is an end unit always a better investment?", "No. It is worth it only if buyers and tenants in that community pay the difference. Recent sales in the same cluster tell you."),
                      ("What should I check first?", "What the end faces: park, road or another cluster. That decides most of the value of being on the end.")]},
-     "ar": {"date": "",
+     "ar": {"date": "2026-10-13",
             "intro": "الوحدة الطرفية تمنح عادةً ضوءًا أكثر وحديقة جانبية وخصوصية أكبر، وغالبًا بسعر أعلى. والوحدة الوسطى أرخص وأسهل في الصيانة. والاختيار الصحيح يعتمد على طريقة استخدامك للبيت وعلى ما يدفع المشترون في ذلك المجتمع مقابله.",
             "points": [
                 ("الضوء والخصوصية", "الوحدة الطرفية لها نوافذ على ثلاث جهات وجار واحد أقل."),
@@ -156,9 +156,9 @@ GUIDES = [
             "faqs": [("هل الطرفية استثمار أفضل دائمًا؟", "لا. تستحق فقط إذا كان المشترون والمستأجرون في ذلك المجتمع يدفعون الفرق. آخر المبيعات في المجموعة نفسها تخبرك."),
                      ("ما أول ما أتحقق منه؟", "ما يواجهه الطرف: حديقة أم طريق أم مجموعة أخرى. هذا يحدد معظم قيمة الموقع الطرفي.")]}},
 
-    {"slug": "choose-the-community-before-the-home", "calc": None, "approved": False,
+    {"slug": "choose-the-community-before-the-home", "calc": None, "approved": True,
      "title": ("Choose the community before the home", "اختر المجتمع قبل البيت"),
-     "en": {"date": "",
+     "en": {"date": "2026-10-13",
             "intro": "In Dubai and Abu Dhabi the community decides most of your daily life and your resale: commute, schools, completion stage, service charges and how much new supply is coming. Choose it first, then the villa.",
             "points": [
                 ("Commute at rush hour", "Drive the route at the time you will actually travel, not on a weekend."),
@@ -170,7 +170,7 @@ GUIDES = [
             ],
             "faqs": [("Is a new community a better deal?", "Sometimes the price is lower, but you live with construction and uncertain service charges. Weigh that against the discount."),
                      ("How many communities should I compare?", "Two or three that fit your commute and budget are enough to compare properly.")]},
-     "ar": {"date": "",
+     "ar": {"date": "2026-10-13",
             "intro": "في دبي وأبوظبي، المجتمع يحدد معظم حياتك اليومية وإعادة البيع: المسافة إلى العمل، والمدارس، ومرحلة الاكتمال، ورسوم الخدمة، وحجم المعروض الجديد القادم. اختره أولًا، ثم اختر الفيلا.",
             "points": [
                 ("المسافة في وقت الذروة", "جرّب الطريق في الوقت الذي ستسافر فيه فعلًا، لا في عطلة نهاية الأسبوع."),
@@ -183,9 +183,9 @@ GUIDES = [
             "faqs": [("هل المجتمع الجديد صفقة أفضل؟", "أحيانًا يكون السعر أقل، لكنك تعيش مع الإنشاءات ورسوم خدمة غير مؤكدة. وازن ذلك مقابل الخصم."),
                      ("كم مجتمعًا أقارن؟", "مجتمعان أو ثلاثة تناسب مسافتك وميزانيتك تكفي لمقارنة حقيقية.")]}},
 
-    {"slug": "villa-price-negotiation-rules", "calc": None, "approved": False,
+    {"slug": "villa-price-negotiation-rules", "calc": None, "approved": True,
      "title": ("5 rules for negotiating a villa price", "5 قواعد للتفاوض على سعر الفيلا"),
-     "en": {"date": "",
+     "en": {"date": "2026-10-13",
             "intro": "Negotiate a villa price with evidence, not opinion: recent transaction prices, the inspection results and the strength of your own offer. Agree your walk-away price before you make the first offer.",
             "points": [
                 ("Start from recorded sales", "Compare with recent registered transactions of similar villas in the same community, not with asking prices."),
@@ -196,7 +196,7 @@ GUIDES = [
             ],
             "faqs": [("How much below the asking price should I offer?", "There is no fixed percentage. Base the offer on recent sales of comparable villas and on the inspection, and explain it."),
                      ("Should I negotiate through an agent?", "An agent can keep the conversation factual, but agree in writing who represents whom and how they are paid.")]},
-     "ar": {"date": "",
+     "ar": {"date": "2026-10-13",
             "intro": "فاوض على سعر الفيلا بالأدلة لا بالآراء: أسعار الصفقات المسجلة مؤخرًا، ونتائج الفحص، وقوة عرضك أنت. وحدد السعر الذي تنسحب عنده قبل أول عرض.",
             "points": [
                 ("ابدأ من المبيعات المسجلة", "قارن بالصفقات المسجلة مؤخرًا لفلل مشابهة في المجتمع نفسه، لا بالأسعار المطلوبة."),
@@ -208,9 +208,9 @@ GUIDES = [
             "faqs": [("بكم أقل من السعر المطلوب أعرض؟", "لا توجد نسبة ثابتة. ابنِ العرض على آخر مبيعات فلل مشابهة وعلى نتيجة الفحص، واشرح أساسه."),
                      ("هل أفاوض عبر وسيط؟", "الوسيط يبقي الحديث موضوعيًا، لكن اتفق كتابةً على من يمثل من وكيف يُدفع له.")]}},
 
-    {"slug": "documents-banks-ask-for", "calc": "monthly", "approved": False,
+    {"slug": "documents-banks-ask-for", "calc": "monthly", "approved": True,
      "title": ("Documents banks ask for", "المستندات التي تطلبها البنوك"),
-     "en": {"date": "",
+     "en": {"date": "2026-10-13",
             "intro": "Banks in the UAE typically ask for identity documents, proof of income and recent bank statements, plus company documents if you are self-employed. Each bank has its own list, so ask for it in writing before you apply.",
             "points": [
                 ("Identity", "Passport, and for residents the visa and Emirates ID."),
@@ -222,7 +222,7 @@ GUIDES = [
             ],
             "faqs": [("Can a non-resident get a mortgage?", "Some banks lend to non-residents, usually at a lower loan-to-value and with more documents. Ask each bank directly."),
                      ("How recent must the statements be?", "Banks set their own period. Ask for the exact requirement before you collect the documents.")]},
-     "ar": {"date": "",
+     "ar": {"date": "2026-10-13",
             "intro": "تطلب البنوك في الإمارات عادةً مستندات الهوية وإثبات الدخل وكشوف حساب حديثة، ومستندات الشركة إن كنت صاحب عمل. ولكل بنك قائمته، فاطلبها مكتوبة قبل التقديم.",
             "points": [
                 ("الهوية", "جواز السفر، وللمقيمين الإقامة والهوية الإماراتية."),
@@ -235,9 +235,9 @@ GUIDES = [
             "faqs": [("هل يحصل غير المقيم على تمويل؟", "بعض البنوك تموّل غير المقيمين، غالبًا بنسبة أقل ومستندات أكثر. اسأل كل بنك مباشرة."),
                      ("ما مدى حداثة الكشوف المطلوبة؟", "كل بنك يحدد المدة. اسأل عن المطلوب بدقة قبل جمع المستندات.")]}},
 
-    {"slug": "service-charges-questions-before-buying", "calc": "cash", "approved": False,
+    {"slug": "service-charges-questions-before-buying", "calc": "cash", "approved": True,
      "title": ("Service charges: 4 questions to ask before buying", "رسوم الخدمة: 4 أسئلة قبل الشراء"),
-     "en": {"date": "",
+     "en": {"date": "2026-10-13",
             "intro": "Service charges are a permanent cost of owning in a Dubai community. Before you buy, ask four questions: how much, what it covers, whether anything is unpaid, and what major works are coming.",
             "points": [
                 ("How much, and how has it changed?", "Ask for the current rate per square foot and the last statements. Compare with the official service-charge figures for the community."),
@@ -247,7 +247,7 @@ GUIDES = [
             ],
             "faqs": [("Are service charges part of the cash I need?", "They are a running cost, not a purchase fee, but budget the first year when you plan your cash."),
                      ("Do service charges affect rental yield?", "Yes. Net yield is rent minus service charges and other costs, so high charges lower it directly.")]},
-     "ar": {"date": "",
+     "ar": {"date": "2026-10-13",
             "intro": "رسوم الخدمة كلفة دائمة لتملك عقار في مجتمعات دبي. قبل الشراء اسأل أربعة أسئلة: كم تبلغ، وماذا تغطي، وهل يوجد مبلغ غير مدفوع، وما الأعمال الكبرى القادمة.",
             "points": [
                 ("كم تبلغ وكيف تغيرت؟", "اطلب القيمة الحالية لكل قدم مربعة وآخر الكشوف، وقارنها بالأرقام الرسمية لرسوم الخدمة في المجتمع."),
