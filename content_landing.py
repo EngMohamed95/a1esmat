@@ -51,7 +51,7 @@ LANDING = [
 {
  "lang": "en", "path": "/off-plan-villas-dubai/", "alt": "/ar/buy-villa-dubai/",
  "crumb": "Off plan villas Dubai",
- "title": "Off Plan Villas for Sale in Dubai: Payment Plans & Investor Fit",
+ "title": "Off Plan Villas for Sale in Dubai: Payment Plans & Fit",
  "meta": "Off-plan villas in Dubai with developer payment plans. Compare communities, handover dates and risks, and see which projects suit your goals and timeline.",
  "h1": "Off Plan Villas in Dubai: Choose by Fit, Not by Launch",
  "intro": P("Buying one of the off plan villas in Dubai usually means a developer payment plan, a handover several years out, and a community that is still taking shape. Those are the same facts whether they suit you or not.",

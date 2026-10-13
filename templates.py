@@ -1,4 +1,4 @@
-import json, hashlib
+import json, hashlib, os
 from html import escape
 import config as C
 from data_images import IMAGES
@@ -48,6 +48,16 @@ a:hover{color:var(--gold-deep)}
 .nav .lang{font-weight:500;color:var(--on-dark);border:1px solid var(--line-dark);padding:.25rem .7rem;border-radius:999px}
 .nav .lang:hover{border-color:var(--gold-2);color:#fff}
 .nav .btn,.nav .btn:hover{color:var(--ink)}
+/* desktop: logo and menu always on one row; spacing tightens as the screen narrows */
+@media (min-width:981px){
+  .site-head .wrap{flex-wrap:nowrap;gap:1.25rem}
+  .nav{flex-wrap:nowrap;white-space:nowrap;gap:clamp(.7rem,1.3vw,1.4rem);font-size:clamp(.84rem,.95vw,.93rem)}
+  .brand{flex:none}
+}
+@media (min-width:981px) and (max-width:1200px){
+  .brand small{display:none}
+  .nav .btn.small{padding:.5rem .85rem}
+}
 
 /* buttons */
 .btn{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--body);font-weight:600;font-size:.98rem;text-decoration:none;padding:.9rem 1.6rem;border-radius:999px;border:1.5px solid var(--gold);background:var(--gold);color:var(--ink);line-height:1.3;transition:background .25s,color .25s,border-color .25s,transform .25s var(--ease),box-shadow .25s}
@@ -163,7 +173,7 @@ p,li{max-width:var(--text)}
 .lead-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(2rem,5vw,4.5rem);align-items:start}
 .lead h2{margin-top:0}
 .lead h2::before{content:"";display:block;width:48px;height:2px;background:var(--gold);margin-bottom:1rem}
-.lead .eyebrow{color:var(--gold-deep)}
+.lead .eyebrow{color:#6E5428}
 .lead-points{list-style:none;padding:0;margin:1.25rem 0}
 .lead-points li{position:relative;padding-inline-start:1.7rem;margin:.5rem 0}
 .lead-points li::before{content:"✓";position:absolute;inset-inline-start:0;color:var(--gold-deep);font-weight:700}
@@ -179,8 +189,8 @@ p,li{max-width:var(--text)}
 .lead-form textarea{resize:vertical;min-height:96px}
 .lead-form input:focus,.lead-form select:focus,.lead-form textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(176,141,87,.2)}
 [dir=rtl] .lead-form input[dir=ltr]{text-align:right}
-.wa-btn{justify-content:center;width:100%;background:#1F8F5F;border-color:#1F8F5F;color:#fff;font-size:1.05rem;padding:1rem}
-.wa-btn:hover{background:#187650;border-color:#187650;color:#fff;box-shadow:0 10px 24px -10px rgba(31,143,95,.6)}
+.wa-btn{justify-content:center;width:100%;background:#17744C;border-color:#17744C;color:#fff;font-size:1.05rem;padding:1rem}
+.wa-btn:hover{background:#125C3C;border-color:#125C3C;color:#fff;box-shadow:0 10px 24px -10px rgba(23,116,76,.6)}
 .lead-form .note{margin:-.4rem 0 0;text-align:center}
 .lead-err{margin:0;color:var(--risk);font-weight:500}
 .lead-ok{margin:0;background:var(--suit-soft);border-radius:8px;padding:.7rem .9rem;color:var(--suit);font-weight:500}
@@ -289,6 +299,9 @@ th{font-family:var(--head);font-weight:600;background:var(--paper-2)}
 .related{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:.6rem}
 .related li a{display:inline-block;padding:.45rem 1rem;border:1px solid var(--line);border-radius:999px;text-decoration:none;background:var(--card);font-size:.93rem}
 .related li a:hover{border-color:var(--gold);color:var(--gold-deep)}
+.guide-list{list-style:none;padding:0;margin:2.5rem 0;display:grid;gap:.75rem}
+.guide-list a{display:block;padding:1.1rem 1.3rem;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);text-decoration:none;font-family:var(--head);font-size:1.15rem}
+.guide-list a:hover{border-color:var(--gold)}
 
 /* footer */
 .site-foot{background:var(--ink);color:var(--on-dark-2);padding:4rem 0 2.5rem;font-size:.92rem;border-top:1px solid var(--line-dark)}
@@ -303,11 +316,11 @@ main > .wrap:last-child{padding-bottom:5rem}
 .legal{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--line-dark);font-size:.84rem}
 .legal p{max-width:none}
 
-.wa-float{position:fixed;inset-inline-end:1rem;bottom:1rem;z-index:15;background:#1F8F5F;color:#fff;border-radius:999px;padding:.8rem 1.25rem;text-decoration:none;font-weight:600;box-shadow:0 10px 30px -8px rgba(14,27,32,.45)}
-.wa-float:hover{color:#fff;background:#187650}
+.wa-float{position:fixed;inset-inline-end:1rem;bottom:1rem;z-index:15;background:#17744C;color:#fff;border-radius:999px;padding:.8rem 1.25rem;text-decoration:none;font-weight:600;box-shadow:0 10px 30px -8px rgba(14,27,32,.45)}
+.wa-float:hover{color:#fff;background:#125C3C}
 
 /* reveal on scroll (only when JS is running) */
-.js .reveal{opacity:0;transform:translateY(22px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.js .reveal{opacity:1;transform:none}
 .js .reveal.in{opacity:1;transform:none}
 
 @media (max-width:980px){.hero-grid{grid-template-columns:1fr;gap:2rem;padding-block:8rem 3.5rem}.facts{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -371,7 +384,107 @@ main > .wrap:last-child{padding-bottom:5rem}
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}html{scroll-behavior:auto}.js .reveal{opacity:1;transform:none}.hero .cover{transform:none}}
 @media print{.site-head,.site-foot,.wa-float,.band{display:none}.phero,.hero{color:var(--ink);background:none;min-height:0}.phero .cover,.hero .cover{display:none}}
+
+/* conversion sections and booking flow */
+.benefit-grid,.audience-grid,.tier-grid{display:grid;gap:1rem;margin:1.5rem 0}
+.benefit-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.audience-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.tier-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.benefit-card,.audience-card,.tier-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:1.35rem;box-shadow:var(--shadow)}
+.benefit-card h3,.audience-card h3,.tier-card h3{margin:.15rem 0 .45rem}
+.benefit-card .num{color:var(--gold-deep);font-family:var(--head);font-size:1.35rem}
+.market-line{font-weight:600;border-inline-start:3px solid var(--gold);padding:.75rem 1rem;background:var(--gold-soft)}
+.developer-strip{display:flex;flex-wrap:wrap;gap:.65rem;list-style:none;padding:0;margin:1.25rem 0}
+.developer-strip li{border:1px solid var(--line);border-radius:999px;background:var(--card);padding:.7rem 1.1rem;font-family:var(--head);font-weight:600}
+.booking-card{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:var(--radius);padding:clamp(1.1rem,2.5vw,1.8rem);box-shadow:var(--shadow-lg)}
+.hero .booking-card{background:rgba(255,255,255,.97)}
+.booking-form{display:block;position:relative}
+.booking-progress{display:flex;gap:.45rem;margin:0 0 1rem}
+.booking-progress span{height:4px;flex:1;background:var(--line);border-radius:9px}
+.booking-progress span.on{background:var(--gold)}
+.booking-step[hidden]{display:none}
+.booking-step h2{font-size:1.2rem;margin:.1rem 0 1rem;max-width:none}
+.booking-step h2::before{display:none}
+.booking-form label,.field-label{display:grid;gap:.35rem;font-size:.9rem;font-weight:600;color:var(--ink-2);margin-bottom:.8rem}
+.booking-form input,.booking-form select{font:inherit;font-size:1rem;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:.75rem .8rem;width:100%;min-height:48px}
+.booking-form input:focus,.booking-form select:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(176,141,87,.2)}
+.phone-input{display:grid;grid-template-columns:8.25rem 1fr;gap:.5rem;direction:ltr}
+.booking-form .phone-input select{direction:ltr;text-align:left;padding-left:2.65rem;background-repeat:no-repeat;background-position:.75rem 50%;background-size:1.45rem auto}
+.choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem;margin-bottom:.9rem}
+.choice-grid label{display:flex;align-items:center;gap:.5rem;margin:0;border:1px solid var(--line);border-radius:10px;padding:.7rem;background:var(--paper);cursor:pointer;min-height:48px}
+.choice-grid input{width:auto;min-height:auto;accent-color:var(--gold-deep)}
+.consent-row{display:flex!important;grid-template-columns:none!important;align-items:flex-start;gap:.65rem!important;font-weight:400!important}
+.consent-row input{width:auto;min-height:auto;margin-top:.35rem}
+.hp-field{position:absolute!important;inset-inline-start:-9999px!important;width:1px!important;height:1px!important;overflow:hidden!important}
+.booking-error{color:var(--risk);background:var(--risk-soft);border-radius:8px;padding:.65rem .8rem;margin:.6rem 0}
+.booking-actions{display:flex;gap:.65rem;flex-wrap:wrap;margin-top:1rem}
+.booking-actions .btn{justify-content:center}
+.day-chips,.slot-chips{display:flex;gap:.55rem;overflow-x:auto;padding:.2rem 0 .8rem;scrollbar-width:thin}
+.day-chip,.slot-chip{font:inherit;white-space:nowrap;border:1px solid var(--line);border-radius:10px;background:var(--paper);padding:.65rem .8rem;min-height:48px;cursor:pointer}
+.day-chip[aria-pressed=true],.slot-chip[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:#fff}
+.day-chip:disabled,.slot-chip:disabled{opacity:.42;cursor:not-allowed}
+.time-note{font-size:.88rem;color:var(--muted)}
+.booking-confirm{background:var(--suit-soft);border-radius:10px;padding:1rem}
+.booking-confirm h2{margin-top:0}
+.lang-offer{position:fixed;inset-inline:1rem;top:84px;z-index:24;max-width:420px;margin-inline:auto;background:#fff;border:1px solid var(--line);border-radius:12px;padding:.85rem 1rem;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:.8rem}
+.lang-offer p{margin:0;flex:1;font-size:.9rem;line-height:1.45}
+.lang-offer button{border:0;background:transparent;font-size:1.3rem;cursor:pointer;min-width:44px;min-height:44px}
+.cookie-banner{position:fixed;inset-inline:1rem;bottom:1rem;z-index:40;max-width:680px;margin-inline:auto;background:var(--ink);color:var(--on-dark);border:1px solid var(--line-dark);border-radius:14px;padding:1rem 1.15rem;box-shadow:var(--shadow-lg)}
+.cookie-banner p{margin:0 0 .75rem;font-size:.9rem;line-height:1.55}
+.cookie-banner a{color:var(--gold-2)}
+.cookie-actions{display:flex;gap:.6rem;flex-wrap:wrap}
+.cookie-actions button{min-height:44px}
+.mobile-bookbar{display:none}
+.calc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+.calculator{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:clamp(1.25rem,3vw,2rem);box-shadow:var(--shadow);margin:2rem 0}
+.calculator label{display:grid;gap:.35rem;font-weight:600;font-size:.92rem}
+.calculator > .btn{margin-top:1.25rem}
+.calculator input,.calculator select{font:inherit;min-height:48px;border:1px solid var(--line);border-radius:10px;background:var(--paper);padding:.7rem .8rem;width:100%}
+.calc-results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem;margin-top:1.25rem}
+.calc-results div{background:var(--gold-soft);border-radius:10px;padding:1rem}
+.calc-results span{display:block;font-size:.82rem;color:var(--muted)}
+.calc-results strong{font-family:var(--head);font-size:1.35rem}
+/* tap targets: at least 44px on touch screens (brief 4.7) */
+@media (max-width:760px){
+  .fcols a{display:flex;align-items:center;min-height:44px;padding:0}
+  .legal a,.related li a,.crumbs a,.pcard .more,.tier-card .more,.nav .lang,.consent-row a,.faq details a{display:inline-flex;align-items:center;min-height:44px}
+  .consent-row input{flex:none;width:24px;height:24px}
+  .brand{min-height:44px}
+  .pcard h3 a{display:inline-block;padding-block:.65rem}
+  .lang-offer .btn{min-height:44px}
+}
+@media(max-width:980px){.benefit-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.tier-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.benefit-grid,.audience-grid,.tier-grid,.calc-grid,.calc-results{grid-template-columns:1fr}.choice-grid{grid-template-columns:1fr}.wa-float{display:none}.mobile-bookbar{position:fixed;display:flex;inset-inline:0;bottom:0;z-index:30;background:var(--ink);border-top:1px solid var(--line-dark);padding:.65rem max(.75rem,env(safe-area-inset-right)) calc(.65rem + env(safe-area-inset-bottom)) max(.75rem,env(safe-area-inset-left));gap:.6rem}.mobile-bookbar .btn{flex:1;justify-content:center;min-height:48px}.mobile-bookbar .wa-mini{flex:0 0 52px;background:#17744C;border-color:#17744C;color:#fff;padding:.7rem}.site-foot{padding-bottom:7rem}}
 """
+
+# Country codes for the phone field. Flags are small inline SVGs because flag emoji
+# render as plain letters on Windows.
+def _teeth(color_bg, color_side, width, teeth):
+    h = 20 / (teeth * 2)
+    d = f"M0 0H{width}" + "".join(f"L{width + 3} {h * (2 * i + 1):.2f}L{width} {h * (2 * i + 2):.2f}" for i in range(teeth)) + "H0Z"
+    return f'<rect width="30" height="20" fill="{color_bg}"/><path d="{d}" fill="{color_side}"/>'
+
+FLAGS = {
+    "ae": '<rect width="30" height="20" fill="#00732f"/><rect y="6.67" width="30" height="6.67" fill="#fff"/><rect y="13.33" width="30" height="6.67" fill="#000"/><rect width="8" height="20" fill="#f00"/>',
+    "sa": '<rect width="30" height="20" fill="#006c35"/><rect x="7" y="6.5" width="16" height="2.4" rx="1.2" fill="#fff"/><rect x="8" y="12" width="14" height="1.3" fill="#fff"/>',
+    "eg": '<rect width="30" height="20" fill="#000"/><rect width="30" height="13.33" fill="#fff"/><rect width="30" height="6.67" fill="#ce1126"/><circle cx="15" cy="10" r="2.2" fill="#c09300"/>',
+    "qa": _teeth("#8a1538", "#fff", 8, 9),
+    "kw": '<rect width="30" height="20" fill="#ce1126"/><rect width="30" height="13.33" fill="#fff"/><rect width="30" height="6.67" fill="#007a3d"/><path d="M0 0L8 6.67V13.33L0 20Z" fill="#000"/>',
+    "bh": _teeth("#ce1126", "#fff", 7, 5),
+    "om": '<rect width="30" height="20" fill="#db161b"/><rect x="8" width="22" height="6.67" fill="#fff"/><rect x="8" y="13.33" width="22" height="6.67" fill="#008000"/>',
+    "in": '<rect width="30" height="20" fill="#138808"/><rect width="30" height="13.33" fill="#fff"/><rect width="30" height="6.67" fill="#f93"/><circle cx="15" cy="10" r="2.3" fill="none" stroke="#000080" stroke-width=".7"/>',
+    "gb": '<rect width="30" height="20" fill="#012169"/><path d="M0 0L30 20M30 0L0 20" stroke="#fff" stroke-width="4"/><path d="M0 0L30 20M30 0L0 20" stroke="#c8102e" stroke-width="1.5"/><path d="M15 0V20M0 10H30" stroke="#fff" stroke-width="6"/><path d="M15 0V20M0 10H30" stroke="#c8102e" stroke-width="3.5"/>',
+    "us": '<rect width="30" height="20" fill="#b22234"/>' + "".join(f'<rect y="{20 / 13 * i:.2f}" width="30" height="{20 / 13:.2f}" fill="#fff"/>' for i in range(1, 13, 2)) + '<rect width="12" height="10.77" fill="#3c3b6e"/>',
+}
+COUNTRIES = [("ae", "+971", "UAE", "الإمارات"), ("sa", "+966", "KSA", "السعودية"), ("eg", "+20", "Egypt", "مصر"),
+             ("qa", "+974", "Qatar", "قطر"), ("kw", "+965", "Kuwait", "الكويت"), ("bh", "+973", "Bahrain", "البحرين"),
+             ("om", "+968", "Oman", "عُمان"), ("in", "+91", "India", "الهند"), ("gb", "+44", "UK", "بريطانيا"), ("us", "+1", "US / Canada", "أمريكا / كندا")]
+
+def _flag_url(svg):
+    from urllib.parse import quote
+    return "url(\"data:image/svg+xml," + quote('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 20">' + svg + "</svg>", safe="") + "\")"
+
+CSS += "".join(f'.phone-input select[data-flag={k}]{{background-image:{_flag_url(v)}}}' for k, v in FLAGS.items())
 
 CSS_V = None  # set below, after CSS is defined
 
@@ -405,13 +518,13 @@ def wa_link(text=""):
     from urllib.parse import quote
     return f"https://wa.me/{C.WHATSAPP}" + (f"?text={quote(text)}" if text else "")
 
+GUIDES_LIVE = False  # set by build.py
+
 NAV = {
-    "en": [("/off-plan-properties-dubai/", "Off-plan"), ("/off-plan-villas-dubai/", "Villas"),
-           ("/off-plan-townhouses-dubai/", "Townhouses"), ("/projects/", "Projects"),
-           ("/investor-assessment/", "Investor assessment")],
-    "ar": [("/ar/villas-for-sale-dubai/", "فلل للبيع"), ("/ar/townhouses-for-sale-dubai/", "تاون هاوس"),
-           ("/ar/villas-installments-dubai/", "بالتقسيط"), ("/ar/projects/", "المشاريع"),
-           ("/ar/investor-assessment/", "التقييم الاستثماري")],
+    "en": [("/#services", "Services"), ("/#developers", "Developers"), ("/projects/", "Projects"),
+           ("/#how-it-works", "How it works"), ("/#contact", "Contact"), ("/blog/", "Insights · Marketing")],
+    "ar": [("/ar/#services", "الخدمات"), ("/ar/#developers", "المطورون"), ("/ar/projects/", "المشاريع"),
+           ("/ar/#how-it-works", "كيف نعمل"), ("/ar/#contact", "تواصل"), ("/blog/", "رؤى · تسويق")],
 }
 
 FOOT = {
@@ -424,7 +537,7 @@ FOOT = {
                           ("/projects/tilal-al-ghaf/", "Tilal Al Ghaf"), ("/projects/elysian-mansions-tilal-al-ghaf/", "Elysian Mansions"),
                           ("/projects/palm-jebel-ali-villas/", "Palm Jebel Ali villas"), ("/projects/the-oasis-emaar/", "The Oasis by Emaar"),
                           ("/projects/nad-al-sheba-gardens/", "Nad Al Sheba Gardens"), ("/projects/sobha-hartland-villas/", "Sobha Hartland villas")]),
-            ("Start here", [("/investor-assessment/", "Investor assessment"), ("/book/", "Talk to Ahmed"), ("/blog/", "Marketing articles (Arabic)"), ("/disclaimer/", "Disclaimer"), ("/ar/", "العربية")]),
+            ("Start here", [("/investor-assessment/", "Investor assessment"), ("/book/", "Book a consultation"), ("/mortgage-calculator/", "Monthly payment calculator"), ("/cash-needed-calculator/", "Cash needed calculator"), ("/blog/", "Insights · Marketing"), ("/privacy/", "Privacy"), ("/disclaimer/", "Disclaimer"), ("/ar/", "العربية")]),
         ],
         "legal": "Ahmed Esmat provides real estate and business advisory. Nothing on this site is financial advice or a guarantee of returns. Project information is checked on the date shown on each page and may change; confirm prices, payment plans and handover dates with the developer before any commitment. Not affiliated with any developer unless stated.",
     },
@@ -437,24 +550,40 @@ FOOT = {
                           ("/ar/projects/tilal-al-ghaf/", "تلال الغاف Tilal Al Ghaf"), ("/ar/projects/elysian-mansions-tilal-al-ghaf/", "Elysian Mansions"),
                           ("/ar/projects/palm-jebel-ali-villas/", "فلل نخلة جبل علي"), ("/ar/projects/the-oasis-emaar/", "The Oasis من إعمار"),
                           ("/ar/projects/nad-al-sheba-gardens/", "حدائق ند الشبا"), ("/ar/projects/sobha-hartland-villas/", "فلل شوبا هارتلاند")]),
-            ("ابدأ من هنا", [("/ar/investor-assessment/", "التقييم الاستثماري"), ("/ar/book/", "تحدث مع أحمد"), ("/blog/", "مقالات في التسويق"), ("/ar/disclaimer/", "إخلاء المسؤولية"), ("/", "English")]),
+            ("ابدأ من هنا", [("/ar/investor-assessment/", "التقييم الاستثماري"), ("/ar/book/", "احجز استشارة"), ("/ar/mortgage-calculator/", "حاسبة القسط الشهري"), ("/ar/cash-needed-calculator/", "حاسبة الكاش المطلوب"), ("/blog/", "رؤى · تسويق"), ("/ar/privacy/", "الخصوصية"), ("/ar/disclaimer/", "إخلاء المسؤولية"), ("/", "English")]),
         ],
         "legal": "يقدم أحمد عصمت استشارات في العقار والأعمال. لا يُعد أي محتوى في هذا الموقع نصيحة مالية أو ضماناً لعائد. معلومات المشاريع مراجعة بالتاريخ المذكور في كل صفحة وقد تتغير، لذا تأكد من الأسعار وخطط الدفع ومواعيد التسليم مع المطور قبل أي التزام. الموقع غير مرتبط بأي مطور ما لم يُذكر خلاف ذلك.",
     },
 }
 
+def script_json(obj):
+    """JSON safe to place inside a <script> element."""
+    return json.dumps(obj, ensure_ascii=False).replace("</", "<\\/")
+
 def ld(obj):
-    return '<script type="application/ld+json">' + json.dumps(obj, ensure_ascii=False) + "</script>"
+    return '<script type="application/ld+json">' + script_json(obj) + "</script>"
 
 def person_schema():
+    same_as = [x for x in (C.INSTAGRAM, getattr(C, "LINKEDIN", "")) if x]
     return {
         "@context": "https://schema.org", "@type": "Person", "@id": C.DOMAIN + "/#ahmed",
         "name": "Ahmed Esmat", "alternateName": "أحمد عصمت", "url": C.DOMAIN + "/",
         "image": img_url("ahmed-esmat-dubai-advisor"),
-        "jobTitle": "Real estate and business advisor", "areaServed": "Dubai, United Arab Emirates",
-        "sameAs": [C.INSTAGRAM] if C.INSTAGRAM else [],
+        "jobTitle": "Real estate and business advisor", "areaServed": ["Dubai", "Abu Dhabi"],
+        "sameAs": same_as,
         "knowsAbout": ["Dubai real estate", "Off-plan property", "Villas and townhouses", "Performance marketing", "Business growth"],
     }
+
+def service_schema():
+    return {"@context": "https://schema.org", "@type": ["ProfessionalService", "RealEstateAgent"], "@id": C.DOMAIN + "/#service",
+            "name": "Ahmed Esmat Real Estate & Business Advisory", "url": C.DOMAIN + "/",
+            "image": img_url("ahmed-esmat-dubai-advisor"), "areaServed": ["Dubai", "Abu Dhabi"],
+            "founder": {"@id": C.DOMAIN + "/#ahmed"},
+            "sameAs": [x for x in (C.INSTAGRAM, getattr(C, "LINKEDIN", "")) if x],
+            **({"telephone": "+" + C.WHATSAPP} if C.WHATSAPP else {}), **({"email": C.EMAIL} if C.EMAIL else {}),
+            **({"legalName": C.LEGAL_ENTITY_EN} if getattr(C, "LEGAL_ENTITY_EN", "") else {}),
+            **({"address": {"@type": "PostalAddress", "streetAddress": C.ADDRESS_STREET, "addressLocality": C.ADDRESS_LOCALITY,
+                            "addressCountry": C.ADDRESS_COUNTRY}} if getattr(C, "ADDRESS_STREET", "") else {})}
 
 def website_schema():
     return {"@context": "https://schema.org", "@type": "WebSite", "@id": C.DOMAIN + "/#site",
@@ -467,12 +596,15 @@ def crumbs_schema(items):
 
 def faq_schema(faqs):
     return {"@context": "https://schema.org", "@type": "FAQPage",
-            "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faqs]}
+            "mainEntity": [{"@type": "Question", "name": f[0], "acceptedAnswer": {"@type": "Answer", "text": f[1]}} for f in faqs]}
 
 def faq_html(faqs, title):
+    """faqs: (question, answer) or (question, answer, link_url, link_text)."""
     out = [f'<section class="faq" id="faq"><h2>{title}</h2>']
-    for q, a in faqs:
-        out.append(f"<details><summary>{escape(q)}</summary><p>{escape(a)}</p></details>")
+    for f in faqs:
+        q, a = f[0], f[1]
+        link = f' <a href="{f[2]}">{escape(f[3])}</a>' if len(f) > 3 else ""
+        out.append(f"<details><summary>{escape(q)}</summary><p>{escape(a)}{link}</p></details>")
     out.append("</section>")
     return "\n".join(out)
 
@@ -530,8 +662,84 @@ def lead_form(lang, topic="", interest=0):
 <p class="note">{L['note']}</p><p class="lead-ok" role="status" hidden>{L['ok']}</p>
 </form></div></section>"""
 
+BOOKING_TEXT = {
+    "en": {
+        "eyebrow": "Book a consultation", "heading": "Choose a time to talk", "intro": "Share the essentials, then choose an available 30-minute slot.",
+        "trust": ["30 minutes", "Online or in person", "No obligation"], "details": "1. Your details", "time": "2. Pick a day and an hour", "done": "3. Confirmation",
+        "name": "Full name", "phone": "Mobile / WhatsApp", "email": "Email (optional)", "interest": "I am interested in", "emirate": "Emirate", "budget": "Budget in AED", "purpose": "Purpose", "timeline": "When do you plan to buy?",
+        "interests": [("villa", "Villa"), ("townhouse", "Townhouse"), ("offplan", "Off-plan launch"), ("unsure", "Not sure")],
+        "emirates": [("dubai", "Dubai"), ("abu-dhabi", "Abu Dhabi"), ("both", "Both")],
+        "budgets": [("under-2", "Under 2M"), ("2-3", "2M–3M"), ("3-5", "3M–5M"), ("5-8", "5M–8M"), ("8-12", "8M–12M"), ("over-12", "Over 12M")],
+        "purposes": [("live", "Live in it"), ("invest", "Invest"), ("both", "Both")],
+        "timelines": [("0-3", "Within 3 months"), ("3-6", "3–6 months"), ("6-12", "6–12 months"), ("exploring", "Just exploring")],
+        "consent": "I agree to be contacted about my enquiry and to the privacy notice.", "continue": "Continue", "minute": "Takes about one minute.",
+        "meeting": "Meeting type", "meetings": [("phone", "Phone / WhatsApp call"), ("video", "Video call"), ("person", "In person (Dubai)")],
+        "confirm": "Confirm booking", "back": "Back", "dubai_time": "Dubai time (UTC+4)", "loading": "Checking availability…", "pick_day": "Choose a day to see available times.",
+        "required": "Please complete all required fields and enter a valid mobile number.", "slot_required": "Please choose a day, time and meeting type.", "taken": "This time was just taken. Please pick another.",
+        "name_invalid": "Please write your name using letters only.", "too_many": "You already have upcoming consultations. Message Ahmed on WhatsApp to change one.", "booked": "You're booked", "request": "Your consultation request is ready", "fallback": "The live calendar is not connected yet. Send the prepared WhatsApp message to complete your request.",
+        "calendar": "Add to calendar", "google": "Google Calendar", "whatsapp": "Message Ahmed on WhatsApp", "change": "Change the time", "privacy": "/privacy/"
+    },
+    "ar": {
+        "eyebrow": "احجز استشارة", "heading": "اختر موعدًا للحديث", "intro": "شارك المعلومات الأساسية، ثم اختر موعدًا متاحًا لمدة 30 دقيقة.",
+        "trust": ["30 دقيقة", "عن بُعد أو وجاهيًا", "دون التزام"], "details": "1. بياناتك", "time": "2. اختر اليوم والساعة", "done": "3. التأكيد",
+        "name": "الاسم الكامل", "phone": "رقم الموبايل / واتساب", "email": "البريد الإلكتروني (اختياري)", "interest": "أنا مهتم بـ", "emirate": "الإمارة", "budget": "الميزانية بالدرهم", "purpose": "الغرض", "timeline": "متى تخطط للشراء؟",
+        "interests": [("villa", "فيلا"), ("townhouse", "تاون هاوس"), ("offplan", "إطلاق جديد"), ("unsure", "غير متأكد")],
+        "emirates": [("dubai", "دبي"), ("abu-dhabi", "أبوظبي"), ("both", "كلاهما")],
+        "budgets": [("under-2", "أقل من 2 مليون"), ("2-3", "2–3 ملايين"), ("3-5", "3–5 ملايين"), ("5-8", "5–8 ملايين"), ("8-12", "8–12 مليونًا"), ("over-12", "أكثر من 12 مليونًا")],
+        "purposes": [("live", "للسكن"), ("invest", "للاستثمار"), ("both", "كلاهما")],
+        "timelines": [("0-3", "خلال 3 أشهر"), ("3-6", "خلال 3–6 أشهر"), ("6-12", "خلال 6–12 شهرًا"), ("exploring", "أستكشف فقط")],
+        "consent": "أوافق على التواصل معي بشأن استفساري وعلى إشعار الخصوصية.", "continue": "متابعة", "minute": "يستغرق نحو دقيقة واحدة.",
+        "meeting": "نوع المقابلة", "meetings": [("phone", "مكالمة هاتف / واتساب"), ("video", "مكالمة فيديو"), ("person", "مقابلة شخصية في دبي")],
+        "confirm": "تأكيد الموعد", "back": "رجوع", "dubai_time": "بتوقيت دبي (UTC+4)", "loading": "جارٍ التحقق من المواعيد…", "pick_day": "اختر يومًا لعرض الساعات المتاحة.",
+        "required": "يرجى إكمال الحقول المطلوبة وإدخال رقم موبايل صحيح.", "slot_required": "يرجى اختيار اليوم والساعة ونوع المقابلة.", "taken": "حُجز هذا الموعد للتو. اختر موعدًا آخر.",
+        "name_invalid": "يرجى كتابة الاسم بالحروف فقط.", "too_many": "لديك مواعيد قادمة بالفعل. راسل أحمد على واتساب لتغيير أحدها.", "booked": "تم حجز موعدك", "request": "طلب الاستشارة جاهز", "fallback": "التقويم المباشر غير متصل بعد. أرسل رسالة واتساب الجاهزة لإكمال الطلب.",
+        "calendar": "أضف إلى التقويم", "google": "تقويم Google", "whatsapp": "راسل أحمد على واتساب", "change": "غيّر الموعد", "privacy": "/ar/privacy/"
+    },
+}
+
+def booking_form(lang, topic="", interest="", compact=False, anchor="contact", heading=None):
+    """Reusable three-step booking form. Backend URL is optional by design."""
+    L = BOOKING_TEXT[lang]
+    option_html = lambda items, sel="": "".join(f'<option value="{escape(v)}"{" selected" if v == sel else ""}>{escape(t)}</option>' for v, t in items)
+    radio_html = lambda name, items: '<div class="choice-grid">' + "".join(
+        f'<label><input type="radio" name="{name}" value="{escape(v)}" required> {escape(t)}</label>' for v, t in items) + '</div>'
+    trust = " · ".join(L["trust"])
+    # The closed select shows flag + code only (site.js swaps the full names in while the list is open)
+    countries = "".join(f'<option value="{code}" data-flag="{k}" data-full="{code} {ar if lang == "ar" else en}">{code if i == 0 else code + " " + (ar if lang == "ar" else en)}</option>'
+                        for i, (k, code, en, ar) in enumerate(COUNTRIES))
+    head = heading or L["heading"]
+    form = f"""<div class="booking-card">
+<form class="booking-form" data-lang="{lang}" data-wa="{C.WHATSAPP}" data-endpoint="{escape(getattr(C, 'BOOKING_ENDPOINT', ''))}" data-labels='{escape(json.dumps(L, ensure_ascii=False))}' novalidate>
+<div class="booking-progress" aria-hidden="true"><span class="on"></span><span></span><span></span></div>
+<input type="hidden" name="topic" value="{escape(topic)}"><input type="hidden" name="lead_id"><input type="hidden" name="tier"><input type="hidden" name="landing_url"><input type="hidden" name="language" value="{lang}">
+<input type="hidden" name="utm_source"><input type="hidden" name="utm_medium"><input type="hidden" name="utm_campaign"><input type="hidden" name="utm_content"><input type="hidden" name="fbclid">
+<label class="hp-field" aria-hidden="true">Company website<input name="website" tabindex="-1" autocomplete="off"></label>
+<div class="booking-step" data-step="1"><h2>{L['details']}</h2>
+<label>{L['name']}<input name="name" autocomplete="name" required maxlength="80"></label>
+<label>{L['phone']}<span class="phone-input"><select name="country_code" data-flag="ae" aria-label="{'كود الدولة' if lang=='ar' else 'Country code'}">{countries}</select><input name="phone" type="tel" inputmode="tel" autocomplete="tel-national" dir="ltr" required maxlength="20"></span></label>
+<label>{L['email']}<input name="email" type="email" autocomplete="email" maxlength="120"></label>
+<div class="frow"><label>{L['interest']}<select name="interest" required>{option_html(L['interests'], interest)}</select></label><label>{L['emirate']}<select name="emirate" required>{option_html(L['emirates'])}</select></label></div>
+<div class="frow"><label>{L['budget']}<select name="budget" required>{option_html(L['budgets'])}</select></label><label>{L['purpose']}<select name="purpose" required>{option_html(L['purposes'])}</select></label></div>
+<label>{L['timeline']}<select name="timeline" required>{option_html(L['timelines'])}</select></label>
+<label class="consent-row"><input type="checkbox" name="consent" required><span>{L['consent']} <a href="{L['privacy']}">{'إشعار الخصوصية' if lang=='ar' else 'Privacy notice'}</a></span></label>
+<p class="booking-error" role="alert" hidden></p><button class="btn booking-next" type="button">{L['continue']}</button><p class="note">{L['minute']}</p></div>
+<div class="booking-step" data-step="2" hidden><h2>{L['time']}</h2><p class="time-note">{L['dubai_time']} <span class="visitor-zone"></span></p><div class="day-chips" role="group"></div><p class="slot-status note">{L['pick_day']}</p><div class="slot-chips" role="group"></div><span class="field-label">{L['meeting']}</span>{radio_html('meeting_type', L['meetings'])}
+<p class="booking-error" role="alert" hidden></p><div class="booking-actions"><button class="btn ghost booking-back" type="button">{L['back']}</button><button class="btn booking-confirm-btn" type="button">{L['confirm']}</button></div></div>
+<div class="booking-step booking-confirm" data-step="3" hidden><h2>{L['done']}</h2><p class="confirmation-copy"></p><div class="booking-actions"><a class="btn ics-link" href="#" hidden download="consultation.ics">{L['calendar']}</a><a class="btn ghost google-link" href="https://calendar.google.com/" hidden target="_blank" rel="noopener">{L['google']}</a><a class="btn wa-confirm" href="https://wa.me/{C.WHATSAPP}" target="_blank" rel="noopener">{L['whatsapp']}</a><button class="btn ghost booking-change" type="button">{L['change']}</button></div></div>
+</form><p class="time-note booking-trust">{escape(trust)}</p></div>"""
+    if compact:
+        return form
+    return f'<section class="lead" id="{anchor}"><div class="wrap lead-grid"><div class="lead-intro"><p class="eyebrow">{L["eyebrow"]}</p><h2>{escape(head)}</h2><p>{escape(L["intro"])}</p><ul class="lead-points">' + "".join(f'<li>{escape(x)}</li>' for x in L['trust']) + f'</ul></div>{form}</div></section>'
+
+WA_ICON = '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .2-1.2c-.1-.1-.3-.2-.5-.3Z"/></svg>'
+
+# All old call sites now receive the shared booking component.
+def lead_form(lang, topic="", interest=0, heading=None):
+    interest_map = {0: "villa", 1: "offplan", 2: "unsure", 3: "unsure"}
+    return booking_form(lang, topic=topic, interest=interest_map.get(interest, ""), heading=heading)
+
 def page(*, lang, path, title, description, body, alt_path=None, schemas=(), og_type="website", og_img="skyline-night", home_page=False,
-         lead=True, lead_topic="", lead_interest=0):
+         lead=True, lead_topic="", lead_interest=0, lead_heading=None, minimal_header=False):
     rtl = lang == "ar"
     canonical = C.DOMAIN + path
     alt = ""
@@ -542,24 +750,43 @@ def page(*, lang, path, title, description, body, alt_path=None, schemas=(), og_
                f'<link rel="alternate" hreflang="x-default" href="{C.DOMAIN}{en_p}">')
     lang_link = alt_path or ("/" if rtl else "/ar/")
     lang_label = "English" if rtl else "العربية"
-    nav = "".join(f'<a href="{u}">{escape(t)}</a>' for u, t in NAV[lang])
-    lead_html = lead_form(lang, lead_topic, lead_interest) if lead else ""
-    talk = "تحدث مع أحمد" if rtl else "Talk to Ahmed"
-    brand_sub = "استشارات عقارية واستثمارية في دبي" if rtl else "Dubai real estate & business advisory"
+    nav_items = list(NAV[lang])
+    if GUIDES_LIVE:  # brief 4.5: real-estate section, shown once the first guide is published
+        nav_items.insert(-1, ("/ar/guides/", "أدلة الشراء") if rtl else ("/guides/", "Buying guides"))
+    nav = "".join(f'<a href="{u}">{escape(t)}</a>' for u, t in nav_items)
+    lead_html = lead_form(lang, lead_topic, lead_interest, lead_heading) if lead else ""
+    talk = "احجز استشارة" if rtl else "Book a consultation"
+    brand_sub = "استشارات عقارية في دبي وأبوظبي" if rtl else "Dubai & Abu Dhabi real estate advisory"
     brand = "أحمد عصمت" if rtl else "Ahmed Esmat"
     home = "/ar/" if rtl else "/"
-    foot_tag = ("القرار أولاً، ثم المشروع. استشارات مستقلة للمستثمرين وأصحاب الأعمال في دبي." if rtl
-                else "The decision first, then the property. Independent advice for investors and business owners in Dubai.")
+    foot_tag = ("القرار أولاً، ثم المشروع. استشارات مستقلة في دبي وأبوظبي." if rtl
+                else "The decision first, then the property. Independent advice across Dubai and Abu Dhabi.")
     f = FOOT[lang]
     cols = "".join(f'<div><h3>{h}</h3>' + "".join(f'<a href="{u}">{escape(t)}</a>' for u, t in links) + "</div>" for h, links in f["cols"])
     lic = C.LICENSE_LINE_AR if rtl else C.LICENSE_LINE_EN
     lic_html = f"<p>{escape(lic)}</p>" if lic else ""
+    social_html = f'<p><a href="{escape(C.INSTAGRAM)}" rel="noopener">Instagram · @a1esmat.investment</a></p>' if C.INSTAGRAM else ""
     wa = wa_link("مرحباً أحمد، أريد استشارة بخصوص الاستثمار في دبي" if rtl else "Hi Ahmed, I'd like advice on investing in Dubai")
-    wa_float = f'<a class="wa-float" href="{wa}" rel="noopener">{"واتساب" if rtl else "WhatsApp"}</a>' if wa else ""
-    ga = ""
-    if C.GA4_ID:
-        ga = (f'<script async src="https://www.googletagmanager.com/gtag/js?id={C.GA4_ID}"></script>'
-              f"<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments)}}gtag('js',new Date());gtag('config','{C.GA4_ID}');</script>")
+    wa_float = f'<a class="wa-float contact-track" href="{wa}" rel="noopener">{"واتساب" if rtl else "WhatsApp"}</a>' if wa else ""
+    book_href = "#contact" if (lead_html or 'id="contact"' in body) else ("/ar/book/" if rtl else "/book/")
+    mobile_bar = (f'<div class="mobile-bookbar"><a class="btn" href="{book_href}">{talk}</a><a class="btn wa-mini contact-track" href="{wa}" aria-label="WhatsApp" rel="noopener">{WA_ICON}</a></div>' if wa else "")
+    tracking_enabled = bool(C.GA4_ID or getattr(C, "META_PIXEL_ID", "") or getattr(C, "CLARITY_ID", ""))
+    site_cfg = json.dumps({"ga4": C.GA4_ID, "meta": getattr(C, "META_PIXEL_ID", ""), "clarity": getattr(C, "CLARITY_ID", ""),
+                           "bookingEndpoint": getattr(C, "BOOKING_ENDPOINT", ""), "lang": lang,
+                           "timezone": getattr(C, "BOOKING_TIMEZONE", "Asia/Dubai"), "days": getattr(C, "BOOKING_DAYS", [1,2,3,4,5,6]),
+                           "start": getattr(C, "BOOKING_START", "10:00"), "end": getattr(C, "BOOKING_END", "19:00"),
+                           "slot": getattr(C, "BOOKING_SLOT_MINUTES", 30), "buffer": getattr(C, "BOOKING_BUFFER_MINUTES", 15),
+                           "notice": getattr(C, "BOOKING_MIN_NOTICE_HOURS", 3), "horizon": getattr(C, "BOOKING_HORIZON_DAYS", 14)}, ensure_ascii=False).replace("</", "<\\/")
+    cookie = ""
+    if tracking_enabled:
+        cookie = (f'<div class="cookie-banner" role="dialog" aria-label="Cookie preferences" hidden><p>'
+                  f'{"نستخدم ملفات أساسية، وبموافقتك نستخدم التحليلات لقياس أداء الموقع." if rtl else "We use essential storage and, with your permission, analytics to measure site performance."} '
+                  f'<a href="{"/ar/privacy/" if rtl else "/privacy/"}">{"الخصوصية" if rtl else "Privacy"}</a></p><div class="cookie-actions">'
+                  f'<button class="btn cookie-accept" type="button">{"قبول التحليلات" if rtl else "Accept analytics"}</button>'
+                  f'<button class="btn ghost cookie-reject" type="button">{"الأساسية فقط" if rtl else "Essential only"}</button></div></div>')
+    nav_inner = (f'<a class="lang" href="{lang_link}" hreflang="{"en" if rtl else "ar"}" lang="{"en" if rtl else "ar"}">{lang_label}</a>' if minimal_header else
+                 f'{nav}<a class="btn small" href="{"#contact" if lead_html else ("/ar/book/" if rtl else "/book/")}">{talk}</a><a class="lang" href="{lang_link}" hreflang="{"en" if rtl else "ar"}" lang="{"en" if rtl else "ar"}">{lang_label}</a>')
+    burger = "" if minimal_header else f'<button class="burger" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="{"القائمة" if rtl else "Menu"}"><span></span></button>'
     gsc = f'<meta name="google-site-verification" content="{C.GSC_VERIFICATION}">' if C.GSC_VERIFICATION else ""
     schema_html = "\n".join(ld(s) for s in schemas)
     preload_fonts = "\n".join(f'<link rel="preload" href="/assets/fonts/{f}" as="font" type="font/woff2" crossorigin>' for f in PRELOAD[lang])
@@ -583,6 +810,7 @@ def page(*, lang, path, title, description, body, alt_path=None, schemas=(), og_
 <meta property="og:image:alt" content="{escape(IMAGES[og_img][lang])}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#0E1B20">
+<meta name="robots" content="max-image-preview:large">
 {gsc}
 {preload_fonts}
 <style>{INLINE_CSS[lang]}</style>
@@ -590,15 +818,15 @@ def page(*, lang, path, title, description, body, alt_path=None, schemas=(), og_
 <link rel="icon" href="/assets/icons/icon-192.png" sizes="192x192" type="image/png">
 <link rel="apple-touch-icon" href="/assets/icons/icon-180.png">
 {schema_html}
-{ga}
+<script>window.A1CFG={site_cfg};</script>
 </head>
 <body{' class="home"' if home_page else ''}>
 <script>document.documentElement.classList.add('js')</script>
 <a class="skip" href="#main">{skip}</a>
 <header class="site-head"><div class="wrap">
 <a class="brand" href="{home}"><img class="mark" src="/assets/img/a1esmat-logo-mark.webp" width="118" height="112" alt=""><span class="bt">{brand}<small>{brand_sub}</small></span></a>
-<button class="burger" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="{'القائمة' if rtl else 'Menu'}"><span></span></button>
-<nav class="nav" id="site-nav" aria-label="{'القائمة الرئيسية' if rtl else 'Main'}">{nav}<a class="btn small" href="{'#contact' if lead_html else ('/ar/book/' if rtl else '/book/')}">{talk}</a><a class="lang" href="{lang_link}" hreflang="{'en' if rtl else 'ar'}" lang="{'en' if rtl else 'ar'}">{lang_label}</a></nav>
+{burger}
+<nav class="nav" id="site-nav" aria-label="{'القائمة الرئيسية' if rtl else 'Main'}">{nav_inner}</nav>
 </div></header>
 <main id="main">
 {body}
@@ -607,33 +835,19 @@ def page(*, lang, path, title, description, body, alt_path=None, schemas=(), og_
 <footer class="site-foot"><div class="wrap">
 <div class="foot-brand"><a class="brand" href="{home}"><img class="mark" src="/assets/img/a1esmat-logo-mark.webp" width="118" height="112" alt=""><span class="bt">{brand}<small>{brand_sub}</small></span></a><p>{escape(foot_tag)}</p></div>
 <div class="fcols">{cols}</div>
-<div class="legal">{lic_html}<p>{escape(f['legal'])}</p><p>© 2026 Ahmed Esmat · a1esmat.com</p></div>
+<div class="legal">{lic_html}{social_html}<p>{escape(f['legal'])}</p><p>© 2026 Ahmed Esmat · a1esmat.com</p></div>
 </div></footer>
 {wa_float}
-<script>
-(function(){{var h=document.querySelector('.site-head');
-var bt=h.querySelector('.burger');bt.addEventListener('click',function(){{var o=h.classList.toggle('open');bt.setAttribute('aria-expanded',o)}});
-h.querySelectorAll('.nav a').forEach(function(a){{a.addEventListener('click',function(){{h.classList.remove('open');bt.setAttribute('aria-expanded','false')}})}});
-if(document.body.classList.contains('home')){{var s=function(){{h.classList.toggle('scrolled',scrollY>40)}};s();addEventListener('scroll',s,{{passive:true}})}}
-var lf=document.querySelector('.lead-form');
-if(lf){{lf.addEventListener('submit',function(e){{e.preventDefault();var L=JSON.parse(lf.dataset.l),v=function(n){{return (lf.elements[n].value||'').trim()}};
-var N=String.fromCharCode(10),digits=v('phone').replace(/[^0-9]/g,''),err=lf.querySelector('.lead-err');
-if(!v('name')||digits.length<7){{err.hidden=false;return}}err.hidden=true;
-var t=L.hi+' '+v('name')+N+L.phone+': '+v('phone')+N+L.interest+': '+v('interest')+N+L.budget+': '+v('budget')+(v('msg')?N+L.msg+': '+v('msg'):'')+N+L.page+': '+document.title+N+location.href.split('#')[0];
-var u='https://wa.me/'+lf.dataset.wa+'?text='+encodeURIComponent(t);
-if(typeof gtag==='function')gtag('event','generate_lead',{{method:'whatsapp_form'}});
-lf.querySelector('.lead-ok').hidden=false;var w=window.open(u,'_blank','noopener');if(!w)location.href=u;}});}}
-var els=document.querySelectorAll('.pcard,.tile,.steps li,.q4 > div,.split,.mini,.fitbox,.strengths,.risks');
-if(!('IntersectionObserver' in window))return;
-var io=new IntersectionObserver(function(es){{es.forEach(function(e){{if(e.isIntersecting){{e.target.classList.add('in');io.unobserve(e.target)}}}})}},{{rootMargin:'0px 0px -8% 0px'}});
-els.forEach(function(el,i){{el.classList.add('reveal');el.style.transitionDelay=(i%4)*70+'ms';io.observe(el)}});
-}})();
-</script>
+{mobile_bar}
+{cookie}
+<script src="/assets/js/site.js?v={JS_V}" defer></script>
 </body>
 </html>
 """
 
 CSS_V = hashlib.md5(CSS.encode("utf-8")).hexdigest()[:10]
+# Cache-busting version for site.js: changes whenever the file changes (assets are cached for a year)
+JS_V = hashlib.md5(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "js", "site.js"), "rb").read()).hexdigest()[:10]
 
 # Self-hosted fonts + CSS inlined into every page: no render-blocking requests
 import os as _os, re as _re

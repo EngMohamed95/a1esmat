@@ -1,0 +1,17 @@
+name = "a1esmat-booking"
+main = "worker.js"
+compatibility_date = "2026-10-01"
+
+[vars]
+ALLOWED_ORIGIN = "https://a1esmat.com"
+
+# 10 requests per minute per IP (writes and slot lookups are counted separately)
+[[unsafe.bindings]]
+name = "LIMITER"
+type = "ratelimit"
+namespace_id = "1001"
+simple = { limit = 10, period = 60 }
+
+# Set the secrets with:
+#   npx wrangler secret put APPS_SCRIPT_URL
+#   npx wrangler secret put PROXY_SECRET

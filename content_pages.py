@@ -93,7 +93,7 @@ HOME = {
 
 ASSESS = {
 "en": {"path": "/investor-assessment/", "alt": "/ar/investor-assessment/",
- "title": "Investor Assessment: Find the Dubai Projects That Fit Your Profile",
+ "title": "Investor Assessment: Dubai Projects That Fit You",
  "meta": "Answer five short questions on your goal, horizon, budget and payment preference. See which Dubai villa and townhouse projects may suit you — and which may not.",
  "h1": "Build your investor profile",
  "lede": "Five short questions. You'll see which projects may fit, and you can send the profile to Ahmed for a written review.",
@@ -138,7 +138,7 @@ BOOK = {
 }
 
 DISCLAIMER = {
-"en": {"path": "/disclaimer/", "alt": "/ar/disclaimer/", "title": "Disclaimer — Ahmed Esmat", "meta": "How to read the information on this site: advisory scope, data sources and limits.", "h1": "Disclaimer",
+"en": {"path": "/disclaimer/", "alt": "/ar/disclaimer/", "title": "Disclaimer: How to Read This Site | Ahmed Esmat", "meta": "How to read the information on this site: advisory scope, data sources and limits.", "h1": "Disclaimer",
  "body": ["Ahmed Esmat provides real estate and business advisory. Content on this website is general information to help you think through a decision. It is not financial, legal or tax advice, and it is not an offer to sell any property.",
           "Project information — including unit types, stages and handover timing — is gathered from developer announcements and public sources and checked on the date shown on each page. Prices, payment plans and dates change frequently. Always confirm current details with the developer or a licensed broker before making any commitment.",
           "No return, price growth or rental income is guaranteed. Past performance of any community or developer does not predict future results.",
