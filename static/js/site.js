@@ -125,6 +125,9 @@
     out._fbp = (document.cookie.match(/(?:^|; )_fbp=([^;]*)/) || [])[1] || "";
     out._fbc = (document.cookie.match(/(?:^|; )_fbc=([^;]*)/) || [])[1] || "";
     if (!out._fbc && out.fbclid) out._fbc = "fb.1." + Date.now() + "." + out.fbclid;
+    // A person using this page is never a bot: an autofill extension may have filled the hidden honeypot,
+    // so clear it rather than silently dropping a real lead. Bots that post to the backend directly are still caught there.
+    out.website = "";
     out.client_user_agent = navigator.userAgent;
     out.analytics_consent = local.get("a1-consent") === "analytics"; // the server only sends CAPI events with consent
     return out;
@@ -267,7 +270,6 @@
     form.querySelector(".booking-next").addEventListener("click", function () {
       var step = form.querySelector('[data-step="1"]'), data = describe(values(form)), digits = data.phone.replace(/\D/g, ""); clearError(step);
       var phoneOk = digits.length >= 8 && digits.length <= 15 && data.phone_raw.replace(/\D/g, "").length >= 6;
-      if (data.website) return; // honeypot
       if (!nameValid(data.name)) { showError(step, labels.name_invalid); return; }
       if (!phoneOk || !data.consent || !emailValid(data.email)) { showError(step, labels.required); return; }
       data.action = "lead"; data.event_id = "lead-" + data.lead_id;

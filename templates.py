@@ -415,7 +415,8 @@ main > .wrap:last-child{padding-bottom:5rem}
 .choice-grid input{width:auto;min-height:auto;accent-color:var(--gold-deep)}
 .consent-row{display:flex!important;grid-template-columns:none!important;align-items:flex-start;gap:.65rem!important;font-weight:400!important}
 .consent-row input{width:auto;min-height:auto;margin-top:.35rem}
-.hp-field{position:absolute!important;inset-inline-start:-9999px!important;width:1px!important;height:1px!important;overflow:hidden!important}
+/* honeypot: display:none so browsers and autofill extensions never fill it; only bots posting raw HTML forms do */
+.hp-field{display:none!important}
 .booking-error{color:var(--risk);background:var(--risk-soft);border-radius:8px;padding:.65rem .8rem;margin:.6rem 0}
 .booking-actions{display:flex;gap:.65rem;flex-wrap:wrap;margin-top:1rem}
 .booking-actions .btn{justify-content:center}
