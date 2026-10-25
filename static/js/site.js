@@ -230,7 +230,8 @@
       status.textContent = result.failed ? labels.fallback : (list.length ? "" : (ar ? "لا توجد مواعيد متاحة في هذا اليوم." : "No available times on this day."));
       list.forEach(function (time) {
         var s = document.createElement("button"); s.type = "button"; s.className = "slot-chip"; s.dataset.time = time; s.setAttribute("aria-pressed", "false");
-        s.textContent = time + (sameZone ? "" : " (" + localTime(form, date, time) + ")");
+        s.textContent = time;
+        if (!sameZone) { var mine = document.createElement("small"); mine.textContent = "(" + localTime(form, date, time) + ")"; s.appendChild(mine); } // visitor's own time, under the Dubai time
         s.addEventListener("click", function () { selectedTime = this.dataset.time; slots.querySelectorAll("button").forEach(function (b) { b.setAttribute("aria-pressed", "false"); }); this.setAttribute("aria-pressed", "true"); });
         slots.appendChild(s);
       });
@@ -291,7 +292,7 @@
       var data = describe(values(form)); data.action = "book"; data.date = selectedDate; data.time = selectedTime; data.meeting_type = meeting.value; data.event_id = "schedule-" + data.lead_id;
       var finish = function (result, live) {
         setStep(form, 3); var copy = form.querySelector(".confirmation-copy"), when = longDate(form, selectedDate) + (ar ? " الساعة " : " at ") + selectedTime;
-        copy.textContent = live ? labels.booked + ": " + when + " (" + labels.dubai_time + ")." : labels.request + ". " + labels.fallback;
+        copy.textContent = live ? labels.booked + ": " + when + " · " + labels.dubai_time : labels.request + ". " + labels.fallback;
         var wa = form.querySelector(".wa-confirm"); wa.href = whatsappUrl(form, data, live ? "booked" : "");
         if (!live) return;
         booked = data;

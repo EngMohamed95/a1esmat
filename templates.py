@@ -420,13 +420,29 @@ main > .wrap:last-child{padding-bottom:5rem}
 .booking-error{color:var(--risk);background:var(--risk-soft);border-radius:8px;padding:.65rem .8rem;margin:.6rem 0}
 .booking-actions{display:flex;gap:.65rem;flex-wrap:wrap;margin-top:1rem}
 .booking-actions .btn{justify-content:center}
-.day-chips,.slot-chips{display:flex;gap:.55rem;overflow-x:auto;padding:.2rem 0 .8rem;scrollbar-width:thin}
-.day-chip,.slot-chip{font:inherit;white-space:nowrap;border:1px solid var(--line);border-radius:10px;background:var(--paper);padding:.65rem .8rem;min-height:48px;cursor:pointer}
+/* the card never grows wider than its column, whatever the chip rows contain */
+.hero-grid > *,.booking-card,.booking-form,.booking-step{min-width:0}
+/* days: one row that scrolls inside the card; times: a grid that wraps, so every time is visible */
+.day-chips{display:flex;gap:.5rem;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;padding:.2rem .1rem .7rem;margin-bottom:.4rem;scrollbar-width:thin;-webkit-mask-image:linear-gradient(to right,#000 88%,transparent);mask-image:linear-gradient(to right,#000 88%,transparent)}
+[dir=rtl] .day-chips{-webkit-mask-image:linear-gradient(to left,#000 88%,transparent);mask-image:linear-gradient(to left,#000 88%,transparent)}
+.slot-chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(5.6rem,1fr));gap:.5rem;padding:.2rem 0 .9rem}
+.day-chip,.slot-chip{font:inherit;font-size:.95rem;white-space:nowrap;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);padding:.55rem .75rem;min-height:48px;cursor:pointer;transition:border-color .2s,background .2s}
+.day-chip{flex:none;scroll-snap-align:start}
+.slot-chip{display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.2;padding:.45rem .3rem}
+.slot-chip small{font-size:.74rem;color:var(--muted);margin-top:.15rem}
+.day-chip:hover:not(:disabled),.slot-chip:hover{border-color:var(--gold)}
 .day-chip[aria-pressed=true],.slot-chip[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:#fff}
+.slot-chip[aria-pressed=true] small{color:var(--on-dark-2)}
 .day-chip:disabled,.slot-chip:disabled{opacity:.42;cursor:not-allowed}
 .time-note{font-size:.88rem;color:var(--muted)}
-.booking-confirm{background:var(--suit-soft);border-radius:10px;padding:1rem}
+.booking-step .choice-grid{grid-template-columns:repeat(auto-fit,minmax(10.5rem,1fr))}
+/* ghost buttons sit on the light card, not on the dark hero */
+.hero .booking-card .btn.ghost,.booking-card .btn.ghost{color:var(--ink);border-color:var(--line);background:transparent}
+.hero .booking-card .btn.ghost:hover,.booking-card .btn.ghost:hover{background:var(--ink);border-color:var(--ink);color:#fff}
+.booking-confirm{background:var(--suit-soft);border-radius:10px;padding:1.1rem}
 .booking-confirm h2{margin-top:0}
+.booking-confirm .confirmation-copy{font-weight:600;color:var(--suit)}
+.booking-confirm .booking-actions .btn{flex:1 1 12rem}
 .lang-offer{position:fixed;inset-inline:1rem;top:84px;z-index:24;max-width:420px;margin-inline:auto;background:#fff;border:1px solid var(--line);border-radius:12px;padding:.85rem 1rem;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:.8rem}
 .lang-offer p{margin:0;flex:1;font-size:.9rem;line-height:1.45}
 .lang-offer button{border:0;background:transparent;font-size:1.3rem;cursor:pointer;min-width:44px;min-height:44px}
