@@ -59,6 +59,22 @@ const ctx = { Date: FakeDate, console: { error() {}, log() {} }, JSON, Math, Str
     own.push(ev); return { id: 'api-' + ev.id, iCalUID: ev.id, hangoutLink: 'https://meet.google.com/abc' }; } } } };
 vm.createContext(ctx); vm.runInContext(code, ctx);
 
+// --- setup(): fills only missing properties and installs one reminder trigger
+{
+  const saved = { ...props }, triggers = [];
+  Object.keys(props).forEach(k => delete props[k]);
+  ctx.PropertiesService = { getScriptProperties: () => ({ getProperty: k => props[k] || null, setProperty: (k, v) => { props[k] = v; } }) };
+  ctx.SpreadsheetApp = { ...ctx.SpreadsheetApp, create: () => ({ getId: () => 'new-sheet', getUrl: () => 'https://docs.google.com/x' }) };
+  ctx.CalendarApp = { ...ctx.CalendarApp, getDefaultCalendar: () => ({ getId: () => 'cal' }) };
+  ctx.Session = { getEffectiveUser: () => ({ getEmail: () => 'ahmed@x.com' }) };
+  ctx.ScriptApp = { getProjectTriggers: () => triggers, newTrigger: h => ({ timeBased: () => ({ everyMinutes: () => ({ create: () => triggers.push({ getHandlerFunction: () => h }) }) }) }) };
+  ctx.setup(); ctx.setup();
+  assert.deepStrictEqual([props.SHEET_ID, props.CALENDAR_ID, props.OWNER_EMAIL], ['new-sheet', 'cal', 'ahmed@x.com'], 'setup fills the required properties');
+  assert.strictEqual(triggers.length, 1, 'running setup twice installs one trigger');
+  Object.keys(props).forEach(k => delete props[k]); Object.assign(props, saved);
+  rows.length = 0; // setup created the sheet header; the tests below start from an empty sheet
+}
+
 const slots = date => ctx.doGet({ parameter: { action: 'slots', date } });
 const post = d => ctx.doPost({ postData: { contents: JSON.stringify(d) } });
 const clearLimits = () => Object.keys(cache).forEach(k => delete cache[k]);

@@ -13,6 +13,9 @@
  * Proxy (optional, for per-IP rate limiting): PROXY_SECRET, shared with backend/cloudflare-worker.
  * Once PROXY_SECRET is set, writes that do not come through the proxy are refused.
  * Deploy as a Web App executed as the owner and accessible to anyone.
+ *
+ * Quick start: run setup() once from the editor. It fills the required properties
+ * (a new "A1esmat Leads" sheet, your default calendar, your email) and installs the reminder trigger.
  */
 const SETTINGS = {
   timezone: 'Asia/Dubai', workingDays: [1, 2, 3, 4, 5, 6],
@@ -393,4 +396,30 @@ function sendReminders() {
       } catch (e) { console.error('reminder row ' + (i + 1), e); }
     }
   } finally { lock.releaseLock(); }
+}
+
+/**
+ * One-time setup. Run it from the Apps Script editor (select "setup", click Run, allow access).
+ * Safe to run again: it only fills what is missing and never creates a second trigger.
+ */
+function setup() {
+  const p = props_(), done = [];
+  if (!p.getProperty('SHEET_ID')) {
+    const ss = SpreadsheetApp.create('A1esmat Leads');
+    p.setProperty('SHEET_ID', ss.getId()); done.push('Created the sheet: ' + ss.getUrl());
+  }
+  if (!p.getProperty('CALENDAR_ID')) {
+    p.setProperty('CALENDAR_ID', CalendarApp.getDefaultCalendar().getId()); done.push('Bookings go to calendar: ' + p.getProperty('CALENDAR_ID'));
+  }
+  if (!p.getProperty('OWNER_EMAIL') && !p.getProperty('NOTIFY_EMAIL')) {
+    p.setProperty('OWNER_EMAIL', Session.getEffectiveUser().getEmail()); done.push('Lead emails go to: ' + p.getProperty('OWNER_EMAIL'));
+  }
+  sheet_(); // creates the Leads tab with its headers
+  if (!ScriptApp.getProjectTriggers().some(t => t.getHandlerFunction() === 'sendReminders')) {
+    ScriptApp.newTrigger('sendReminders').timeBased().everyMinutes(15).create(); done.push('Reminders run every 15 minutes');
+  }
+  const today = isoDay_(new Date());
+  done.push('Free times today (' + today + '): ' + (availableSlots_(today).join(', ') || 'none'));
+  console.log(done.join('\n') + '\nNext: Deploy > New deployment > Web app (Execute as: Me, Who has access: Anyone) and copy the /exec URL.');
+  return done;
 }

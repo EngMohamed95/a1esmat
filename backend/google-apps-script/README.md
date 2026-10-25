@@ -1,5 +1,16 @@
 # Google Apps Script booking backend
 
+## Quick start (about 15 minutes, from Ahmed's Google account)
+
+1. script.google.com → New project. Project settings → tick "Show appsscript.json manifest file".
+2. Paste `Code.gs` and `appsscript.json` from this folder over the editor's files and save.
+3. Select `setup` in the toolbar → Run → allow access. It creates the "A1esmat Leads" sheet, uses
+   your default calendar and email, and installs the reminder trigger (steps 1, 3, 4, 5 and 8 below).
+4. Deploy → New deployment → Web app → Execute as: Me, Who has access: Anyone → copy the `/exec` URL
+   into `BOOKING_ENDPOINT` in `config.py`, then push.
+
+## Manual setup (reference)
+
 1. Create a Google Sheet (the script adds a `Leads` tab with headers on first use).
 2. Create an Apps Script project and paste `Code.gs` and `appsscript.json` into it.
 3. In **Project settings → Script properties**, add:
