@@ -53,7 +53,7 @@ CLARITY_ID = ""
 
 # Booking API. In production this is the deployed Google Apps Script Web App
 # URL. Keep empty until the deployment in backend/google-apps-script is ready.
-BOOKING_ENDPOINT = ""
+BOOKING_ENDPOINT = "https://script.google.com/macros/s/AKfycbzXcoR3yjdBISWs_VSIYxhjracljAFPeRB8QrcXVk-w50ekBDvwAy4fbUsm1JNmLT69cQ/exec"
 
 # Availability defaults; the Apps Script backend is authoritative.
 BOOKING_TIMEZONE = "Asia/Dubai"
